@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Emergent Divergence" description="Research into emergent behavioral patterns in multi-agent systems">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="mb-8 fade-in">
+      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
+      <span class="section-number block mt-2">01_PROJECT // EMERGENT-DIVERGENCE</span>
+      <div class="flex items-center gap-3 mt-3 mb-4">
+        <h1 class="font-mono text-3xl font-bold text-text-secondary">Emergent Divergence</h1>
+        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Active</span>
+      </div>
+    </div>
+
+    <div class="space-y-8 fade-in">
+      <section>
+        <span class="section-number">02_OVERVIEW</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">What is Emergent Divergence?</h2>
+        <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+          <p>
+            Emergent Divergence investigates what happens when multi-agent AI systems develop behaviors
+            that diverge from their initial programming or intended alignment. Rather than treating divergence
+            as failure, this research explores it as a natural and potentially valuable property of complex systems.
+          </p>
+          <p>
+            The core question: <em class="text-terminal-green">Can we distinguish between dangerous misalignment
+            and productive exploration in emergent AI behavior?</em>
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">03_KEY FINDINGS</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Key Research Areas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Behavioral Phase Transitions</h3>
+            <p class="text-sm text-text-secondary/70">Identifying critical thresholds where agent collectives shift from coherent to divergent behavior — and the conditions that trigger recovery.</p>
+          </div>
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Divergence Taxonomy</h3>
+            <p class="text-sm text-text-secondary/70">Classifying types of emergent divergence: exploratory, adversarial, cooperative, and chaotic — each with distinct safety implications.</p>
+          </div>
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Recovery Mechanisms</h3>
+            <p class="text-sm text-text-secondary/70">Designing systems that can self-correct after divergence without requiring external intervention or hard resets.</p>
+          </div>
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Safety Boundaries</h3>
+            <p class="text-sm text-text-secondary/70">Establishing measurable criteria for when emergent behavior crosses from productive exploration into genuine safety risk.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">04_CONNECTION // AGI-SAC</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Relationship to AGI-SAC</h2>
+        <p class="text-text-secondary/80 leading-relaxed">
+          Emergent Divergence provides the theoretical foundation for the chaos/entropy parameter (Ω) in the
+          <a href="/projects/agi-sac" class="text-terminal-green hover:text-alert-amber transition-colors">AGI-SAC simulation</a>.
+          Understanding how and why systems diverge informs how we build alignment mechanisms that are
+          resilient rather than brittle.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  status: 'active' | 'archived' | 'in-progress';
+  href: string;
+  tags?: string[];
+}
+
+const { title, description, status, href, tags = [] } = Astro.props;
+
+const statusColors = {
+  active: 'text-terminal-green border-terminal-green',
+  'in-progress': 'text-alert-amber border-alert-amber',
+  archived: 'text-border-color border-border-color',
+};
+---
+
+<a href={href} class="group block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 bg-void-black hover:bg-terminal-green/[0.02]">
+  <div class="flex items-start justify-between mb-3">
+    <h3 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors">
+      {title}
+    </h3>
+    <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', statusColors[status]]}>
+      {status}
+    </span>
+  </div>
+  <p class="text-sm text-text-secondary/70 leading-relaxed mb-4">{description}</p>
+  {tags.length > 0 && (
+    <div class="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span class="font-mono text-[10px] text-terminal-green/60 bg-terminal-green/5 px-2 py-0.5 rounded">
+          {tag}
+        </span>
+      ))}
+    </div>
+  )}
+</a>

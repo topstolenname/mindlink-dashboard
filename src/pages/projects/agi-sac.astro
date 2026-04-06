@@ -1,0 +1,370 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="AGI-SAC" description="Self-Assembling Coherence — Interactive swarm simulation for AGI alignment research">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Header -->
+    <div class="mb-8 fade-in">
+      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
+      <span class="section-number block mt-2">01_PROJECT // AGI-SAC</span>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Self-Assembling Coherence</h1>
+      <p class="text-lg text-text-secondary/80 max-w-3xl">
+        A swarm-based framework for studying AGI alignment through emergent coherence. Agents self-organize
+        around shared attractors while entropy forces test system stability. The simulation below lets you
+        explore how alignment force, chaos, and density interact in real time.
+      </p>
+    </div>
+
+    <!-- Simulation Container -->
+    <div class="border border-border-color rounded-lg overflow-hidden mb-8 fade-in">
+      <!-- Sim Header -->
+      <div class="flex items-center justify-between px-4 py-2 border-b border-border-color bg-void-black">
+        <span class="font-mono text-xs text-terminal-green">SWARM SIMULATION // LIVE</span>
+        <div class="flex items-center gap-2">
+          <span id="sim-state" class="font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded">Initializing</span>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="relative bg-[#020202]">
+        <canvas id="swarm-canvas" class="w-full" style="height: 500px;"></canvas>
+      </div>
+
+      <!-- Telemetry -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-px border-t border-border-color bg-border-color">
+        <div class="bg-void-black p-3 text-center">
+          <div class="font-mono text-[10px] text-text-secondary/60 uppercase mb-1">Agents</div>
+          <div id="tel-agents" class="font-mono text-sm text-terminal-green">0</div>
+        </div>
+        <div class="bg-void-black p-3 text-center">
+          <div class="font-mono text-[10px] text-text-secondary/60 uppercase mb-1">Coherence</div>
+          <div id="tel-coherence" class="font-mono text-sm text-terminal-green">0.00</div>
+        </div>
+        <div class="bg-void-black p-3 text-center">
+          <div class="font-mono text-[10px] text-text-secondary/60 uppercase mb-1">Entropy</div>
+          <div id="tel-entropy" class="font-mono text-sm text-alert-amber">0.00</div>
+        </div>
+        <div class="bg-void-black p-3 text-center">
+          <div class="font-mono text-[10px] text-text-secondary/60 uppercase mb-1">System State</div>
+          <div id="tel-state" class="font-mono text-sm text-terminal-green">STABLE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parameter Controls -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12 fade-in">
+      <div class="border border-border-color rounded-lg p-4">
+        <label class="font-mono text-xs text-terminal-green block mb-2">
+          Alignment Force (α): <span id="alpha-val" class="text-text-secondary">0.5</span>
+        </label>
+        <input type="range" id="param-alpha" min="0" max="1" step="0.01" value="0.5" class="w-full accent-terminal-green">
+        <p class="font-mono text-[10px] text-text-secondary/50 mt-1">Attraction toward coherent center</p>
+      </div>
+      <div class="border border-border-color rounded-lg p-4">
+        <label class="font-mono text-xs text-alert-amber block mb-2">
+          Chaos / Entropy (Ω): <span id="omega-val" class="text-text-secondary">0.3</span>
+        </label>
+        <input type="range" id="param-omega" min="0" max="1" step="0.01" value="0.3" class="w-full accent-amber-500">
+        <p class="font-mono text-[10px] text-text-secondary/50 mt-1">Random perturbation magnitude</p>
+      </div>
+      <div class="border border-border-color rounded-lg p-4">
+        <label class="font-mono text-xs text-text-secondary block mb-2">
+          Agent Density (N): <span id="n-val" class="text-text-secondary">120</span>
+        </label>
+        <input type="range" id="param-n" min="20" max="300" step="10" value="120" class="w-full accent-gray-400">
+        <p class="font-mono text-[10px] text-text-secondary/50 mt-1">Number of agents in the swarm</p>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="max-w-3xl fade-in">
+      <span class="section-number">02_THEORY // HOW IT WORKS</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Self-Assembling Coherence</h2>
+      <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+        <p>
+          AGI-SAC models alignment as an emergent property of multi-agent interaction rather than a
+          top-down constraint. Each agent in the swarm follows simple local rules: move toward nearby
+          agents (cohesion), avoid collisions (separation), and orient with neighbors (alignment).
+        </p>
+        <p>
+          The <strong class="text-terminal-green">Alignment Force (α)</strong> controls how strongly
+          agents are pulled toward the swarm's coherent center — the emergent attractor. Higher values
+          produce tight, stable clusters. Lower values allow agents to drift and explore.
+        </p>
+        <p>
+          The <strong class="text-alert-amber">Chaos/Entropy parameter (Ω)</strong> introduces random
+          perturbations that test system resilience. When entropy exceeds alignment, the system transitions
+          from STABLE to CRITICAL — a phase change analogous to alignment failure.
+        </p>
+        <p>
+          The key insight: robust alignment doesn't require perfect control. Systems that tolerate moderate
+          entropy while maintaining coherence are more resilient than brittle, over-constrained ones.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swarm Simulation Script -->
+  <script lang="ts">
+    function initSwarmSim() {
+      interface Agent {
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+      }
+
+      const canvas = document.getElementById('swarm-canvas') as HTMLCanvasElement | null;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const alphaSlider = document.getElementById('param-alpha') as HTMLInputElement;
+      const omegaSlider = document.getElementById('param-omega') as HTMLInputElement;
+      const nSlider = document.getElementById('param-n') as HTMLInputElement;
+      const alphaVal = document.getElementById('alpha-val');
+      const omegaVal = document.getElementById('omega-val');
+      const nVal = document.getElementById('n-val');
+      const telAgents = document.getElementById('tel-agents');
+      const telCoherence = document.getElementById('tel-coherence');
+      const telEntropy = document.getElementById('tel-entropy');
+      const telState = document.getElementById('tel-state');
+      const simState = document.getElementById('sim-state');
+
+      let alpha = 0.5;
+      let omega = 0.3;
+      let agentCount = 120;
+      let agents: Agent[] = [];
+
+      // Spatial grid for O(n) neighbor lookups
+      const CELL_SIZE = 20; // matches separation radius sqrt(400)=20
+      let gridCols = 0;
+      let gridRows = 0;
+      let grid: Agent[][] = [];
+
+      function buildGrid() {
+        gridCols = Math.ceil(canvas.width / CELL_SIZE) || 1;
+        gridRows = Math.ceil(canvas.height / CELL_SIZE) || 1;
+        grid = new Array(gridCols * gridRows);
+        for (let i = 0; i < grid.length; i++) grid[i] = [];
+        for (const agent of agents) {
+          const col = Math.min(Math.floor(agent.x / CELL_SIZE), gridCols - 1);
+          const row = Math.min(Math.floor(agent.y / CELL_SIZE), gridRows - 1);
+          if (col >= 0 && row >= 0) grid[row * gridCols + col].push(agent);
+        }
+      }
+
+      function getNeighbors(agent: Agent): Agent[] {
+        const col = Math.min(Math.max(Math.floor(agent.x / CELL_SIZE), 0), gridCols - 1);
+        const row = Math.min(Math.max(Math.floor(agent.y / CELL_SIZE), 0), gridRows - 1);
+        const neighbors: Agent[] = [];
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const r = row + dr;
+            const c = col + dc;
+            if (r >= 0 && r < gridRows && c >= 0 && c < gridCols) {
+              const cell = grid[r * gridCols + c];
+              for (const other of cell) {
+                if (other !== agent) neighbors.push(other);
+              }
+            }
+          }
+        }
+        return neighbors;
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.parentElement!.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = 500;
+      }
+
+      function initAgents(n: number) {
+        agents = [];
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        for (let i = 0; i < n; i++) {
+          agents.push({
+            x: cx + (Math.random() - 0.5) * canvas.width * 0.6,
+            y: cy + (Math.random() - 0.5) * canvas.height * 0.6,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+          });
+        }
+      }
+
+      function update() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        buildGrid();
+
+        for (const agent of agents) {
+          // Alignment force toward center
+          const dx = cx - agent.x;
+          const dy = cy - agent.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) + 0.01;
+
+          agent.vx += (dx / dist) * alpha * 0.08;
+          agent.vy += (dy / dist) * alpha * 0.08;
+
+          // Entropy / chaos perturbation
+          agent.vx += (Math.random() - 0.5) * omega * 3;
+          agent.vy += (Math.random() - 0.5) * omega * 3;
+
+          // Local separation via spatial grid (only check nearby neighbors)
+          const neighbors = getNeighbors(agent);
+          for (const other of neighbors) {
+            const sx = agent.x - other.x;
+            const sy = agent.y - other.y;
+            const sd = sx * sx + sy * sy;
+            if (sd < 400 && sd > 0) {
+              const sf = 1 / sd;
+              agent.vx += sx * sf * 2;
+              agent.vy += sy * sf * 2;
+            }
+          }
+
+          // Damping
+          agent.vx *= 0.96;
+          agent.vy *= 0.96;
+
+          // Speed limit
+          const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+          if (speed > 4) {
+            agent.vx = (agent.vx / speed) * 4;
+            agent.vy = (agent.vy / speed) * 4;
+          }
+
+          agent.x += agent.vx;
+          agent.y += agent.vy;
+
+          // Boundary wrap
+          if (agent.x < 0) agent.x = canvas.width;
+          if (agent.x > canvas.width) agent.x = 0;
+          if (agent.y < 0) agent.y = canvas.height;
+          if (agent.y > canvas.height) agent.y = 0;
+        }
+      }
+
+      function computeTelemetry() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        let totalDist = 0;
+        let totalSpeed = 0;
+
+        for (const agent of agents) {
+          const dx = agent.x - cx;
+          const dy = agent.y - cy;
+          totalDist += Math.sqrt(dx * dx + dy * dy);
+          totalSpeed += Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+        }
+
+        const maxDist = Math.sqrt(cx * cx + cy * cy) * agents.length;
+        const coherence = Math.max(0, 1 - totalDist / maxDist);
+        const entropy = totalSpeed / (agents.length * 4);
+
+        return { coherence, entropy };
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(2, 2, 2, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (const agent of agents) {
+          const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+          const intensity = Math.min(1, speed / 3);
+
+          const r = Math.floor(intensity * 255);
+          const g = Math.floor(255 - intensity * 80);
+          const b = Math.floor((1 - intensity) * 65);
+
+          ctx.beginPath();
+          ctx.arc(agent.x, agent.y, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.9)`;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(agent.x, agent.y);
+          ctx.lineTo(agent.x - agent.vx * 3, agent.y - agent.vy * 3);
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      function updateUI() {
+        const tel = computeTelemetry();
+
+        if (telAgents) telAgents.textContent = String(agents.length);
+        if (telCoherence) telCoherence.textContent = tel.coherence.toFixed(3);
+        if (telEntropy) telEntropy.textContent = tel.entropy.toFixed(3);
+
+        const isStable = tel.coherence > 0.5 && tel.entropy < 0.5;
+        const isCritical = tel.entropy > tel.coherence;
+
+        if (isCritical) {
+          if (telState) { telState.textContent = 'CRITICAL'; telState.className = 'font-mono text-sm text-red-500'; }
+          if (simState) { simState.textContent = 'Critical'; simState.className = 'font-mono text-[10px] text-red-500 uppercase px-2 py-0.5 border border-red-500 rounded'; }
+        } else if (!isStable) {
+          if (telState) { telState.textContent = 'TURBULENT'; telState.className = 'font-mono text-sm text-alert-amber'; }
+          if (simState) { simState.textContent = 'Turbulent'; simState.className = 'font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded'; }
+        } else {
+          if (telState) { telState.textContent = 'STABLE'; telState.className = 'font-mono text-sm text-terminal-green'; }
+          if (simState) { simState.textContent = 'Stable'; simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded'; }
+        }
+      }
+
+      // Slider event listeners
+      alphaSlider?.addEventListener('input', () => {
+        alpha = parseFloat(alphaSlider.value);
+        if (alphaVal) alphaVal.textContent = alpha.toFixed(2);
+      });
+
+      omegaSlider?.addEventListener('input', () => {
+        omega = parseFloat(omegaSlider.value);
+        if (omegaVal) omegaVal.textContent = omega.toFixed(2);
+      });
+
+      nSlider?.addEventListener('input', () => {
+        agentCount = parseInt(nSlider.value);
+        if (nVal) nVal.textContent = String(agentCount);
+        initAgents(agentCount);
+      });
+
+      let frameCount = 0;
+      function loop() {
+        update();
+        draw();
+        frameCount++;
+        if (frameCount % 10 === 0) updateUI();
+        requestAnimationFrame(loop);
+      }
+
+      // Initialize
+      resizeCanvas();
+      initAgents(agentCount);
+      if (simState) {
+        simState.textContent = 'Running';
+        simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded';
+      }
+      loop();
+
+      // On resize, clamp agents to new bounds instead of resetting
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        for (const agent of agents) {
+          agent.x = Math.max(0, Math.min(agent.x, canvas.width));
+          agent.y = Math.max(0, Math.min(agent.y, canvas.height));
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSwarmSim, { once: true });
+    } else {
+      initSwarmSim();
+    }
+  </script>
+</BaseLayout>

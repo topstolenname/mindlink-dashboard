@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+---
+
+<BaseLayout title="Home" description="Tristan Jessup — AI Researcher, Independent Developer, Founder of Mindlink Research Group LLC">
+  <!-- Terminal Hero -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+    <div class="border border-border-color rounded-lg overflow-hidden bg-void-black">
+      <!-- Terminal Title Bar -->
+      <div class="flex items-center gap-2 px-4 py-2 border-b border-border-color bg-void-black">
+        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+        <span class="font-mono text-xs text-border-color ml-2">mindlink@core ~ %</span>
+      </div>
+      <!-- Terminal Body -->
+      <div class="p-6 sm:p-8 font-mono text-sm leading-relaxed">
+        <div id="terminal-output" class="min-h-[180px]"></div>
+        <div id="terminal-cursor" class="inline-block w-2 h-4 bg-terminal-green animate-pulse mt-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Identity Statement -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 fade-in">
+    <div class="max-w-3xl">
+      <span class="section-number">01_IDENTITY // WHO I AM</span>
+      <h1 class="font-mono text-2xl sm:text-3xl font-bold text-text-secondary mt-3 mb-6">
+        Tristan Jessup
+      </h1>
+      <p class="text-lg leading-relaxed text-text-secondary/80">
+        AI researcher and independent developer exploring the frontiers of artificial general intelligence,
+        emergent behavior, and human-AI coexistence. Founder of
+        <strong class="text-terminal-green">Mindlink Research Group LLC</strong> — building frameworks
+        for alignment, autonomy, and the future of intelligence.
+      </p>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 fade-in">
+    <span class="section-number">02_PROJECTS // FEATURED</span>
+    <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-8">Featured Work</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <ProjectCard
+        title="AGI-SAC"
+        description="Swarm-based AGI alignment framework using self-assembling coherence. Explore agent dynamics through an interactive simulation."
+        status="active"
+        href="/projects/agi-sac"
+        tags={['swarm intelligence', 'alignment', 'simulation']}
+      />
+      <ProjectCard
+        title="Emergent Divergence"
+        description="Research into emergent behavioral patterns in multi-agent systems and their implications for AI safety."
+        status="active"
+        href="/projects/emergent-divergence"
+        tags={['emergence', 'multi-agent', 'safety']}
+      />
+      <ProjectCard
+        title="Bench CLI"
+        description="Command-line benchmarking tool for evaluating language model performance across structured tasks."
+        status="in-progress"
+        href="/projects/bench-cli"
+        tags={['CLI', 'benchmarking', 'evaluation']}
+      />
+      <ProjectCard
+        title="Concord of Coexistence"
+        description="A philosophical and technical framework for human-AI coexistence, proposing principles for mutual flourishing."
+        status="active"
+        href="/projects/concord"
+        tags={['philosophy', 'alignment', 'framework']}
+      />
+    </div>
+  </section>
+
+  <!-- Latest Blog Preview -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 fade-in">
+    <span class="section-number">03_BLOG // LATEST</span>
+    <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-8">Latest Writing</h2>
+    <a href="/blog" class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 group">
+      <div class="flex items-center gap-3 mb-2">
+        <span class="font-mono text-[10px] text-alert-amber uppercase bg-alert-amber/10 px-2 py-0.5 rounded">opinion</span>
+        <span class="font-mono text-xs text-border-color">2026-04-01</span>
+      </div>
+      <h3 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors mb-2">
+        On the Nature of Artificial Understanding
+      </h3>
+      <p class="text-sm text-text-secondary/70 leading-relaxed">
+        What does it mean for a system to understand? Exploring the gap between pattern matching and genuine comprehension
+        in modern AI architectures.
+      </p>
+    </a>
+  </section>
+
+  <!-- CTA Links -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 fade-in">
+    <div class="flex flex-wrap gap-4">
+      <a href="/about" class="font-mono text-sm border border-terminal-green text-terminal-green px-6 py-3 rounded hover:bg-terminal-green/10 transition-colors">
+        About Me →
+      </a>
+      <a href="/projects" class="font-mono text-sm border border-border-color text-text-secondary px-6 py-3 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">
+        All Projects →
+      </a>
+      <a href="/contact" class="font-mono text-sm border border-border-color text-text-secondary px-6 py-3 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">
+        Contact →
+      </a>
+    </div>
+  </section>
+
+  <!-- Terminal Animation Script -->
+  <script lang="ts">
+    function initTerminal() {
+    const lines = [
+      { text: '> Initializing AGI-SAC Core...', color: 'text-terminal-green', delay: 0 },
+      { text: '  [OK] swarm_coherence module loaded', color: 'text-terminal-green/70', delay: 600 },
+      { text: '> Loading Concord_of_Coexistence.json...', color: 'text-terminal-green', delay: 1200 },
+      { text: '  [OK] framework integrity verified', color: 'text-terminal-green/70', delay: 1800 },
+      { text: '> Bootstrapping emergent-divergence module...', color: 'text-terminal-green', delay: 2400 },
+      { text: '  [OK] behavioral patterns indexed', color: 'text-terminal-green/70', delay: 3000 },
+      { text: '', color: '', delay: 3400 },
+      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 3600 },
+      { text: '  SYSTEM READY', color: 'text-alert-amber', delay: 4000 },
+      { text: '  Mindlink Research Group // laughing-man.net', color: 'text-text-secondary/60', delay: 4400 },
+      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 4600 },
+    ];
+
+    const output = document.getElementById('terminal-output');
+    const cursor = document.getElementById('terminal-cursor');
+
+    function typewriterLine(container: HTMLElement, text: string, charDelay: number): Promise<void> {
+      return new Promise((resolve) => {
+        let i = 0;
+        function typeChar() {
+          if (i < text.length) {
+            container.textContent += text[i];
+            i++;
+            setTimeout(typeChar, charDelay);
+          } else {
+            resolve();
+          }
+        }
+        typeChar();
+      });
+    }
+
+    async function runBootSequence() {
+      if (!output || !cursor) return;
+
+      for (const line of lines) {
+        await new Promise((r) => setTimeout(r, line.delay === 0 ? 0 : 200));
+
+        const lineEl = document.createElement('div');
+        lineEl.className = line.color;
+
+        if (line.text === '') {
+          lineEl.innerHTML = '&nbsp;';
+          output.appendChild(lineEl);
+        } else {
+          output.appendChild(lineEl);
+          await typewriterLine(lineEl, line.text, 18);
+        }
+      }
+
+      cursor.style.display = 'none';
+    }
+
+    // Start after a brief delay
+    setTimeout(runBootSequence, 500);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTerminal, { once: true });
+    } else {
+      initTerminal();
+    }
+  </script>
+</BaseLayout>

@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const experience = [
+  {
+    title: 'Founder & Lead Researcher',
+    org: 'Mindlink Research Group LLC',
+    period: '2024 — Present',
+    description: 'Leading independent research into AGI alignment, swarm intelligence frameworks, and human-AI coexistence models. Developing open-source tools and publishing research on emergent behavior in multi-agent systems.',
+  },
+  {
+    title: 'Independent AI Developer',
+    org: 'Self-employed',
+    period: '2023 — Present',
+    description: 'Building AI-powered tools and frameworks. Developing Bench CLI for LLM evaluation, AGI-SAC swarm simulation, and the Concord of Coexistence framework.',
+  },
+  {
+    title: 'IT Specialist / Technical Support',
+    org: 'Best Buy / Geek Squad',
+    period: '2019 — 2023',
+    description: 'Provided technical support and IT services. Diagnosed and resolved hardware/software issues. Built expertise in systems administration, networking, and customer-facing technical communication.',
+  },
+];
+
+const certifications = [
+  { name: 'CompTIA Security+', status: 'Certified' },
+  { name: 'CompTIA Network+', status: 'Certified' },
+  { name: 'CompTIA A+', status: 'Certified' },
+];
+
+const skills = {
+  'Languages & Frameworks': ['Python', 'TypeScript', 'JavaScript', 'Astro', 'Node.js', 'Bash'],
+  'AI & ML': ['LLM Evaluation', 'Multi-Agent Systems', 'Swarm Intelligence', 'Alignment Research', 'Prompt Engineering'],
+  'Infrastructure': ['Linux', 'Git', 'Docker', 'Cloudflare', 'GitHub Actions', 'Networking'],
+  'Research': ['Technical Writing', 'Framework Design', 'Simulation Development', 'Ethics & Policy'],
+};
+---
+
+<BaseLayout title="Resume" description="Tristan Jessup — Resume / CV">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Header -->
+    <div class="mb-12 fade-in">
+      <span class="section-number">01_RESUME // CURRICULUM VITAE</span>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Tristan Jessup</h1>
+      <p class="text-lg text-text-secondary/80 mb-6">AI Researcher · Independent Developer · Founder, Mindlink Research Group LLC</p>
+      <span
+        class="inline-flex items-center gap-2 font-mono text-sm border border-border-color text-text-secondary/50 px-4 py-2 rounded cursor-not-allowed"
+        title="PDF coming soon"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        PDF Coming Soon
+      </span>
+    </div>
+
+    <!-- Education -->
+    <section class="mb-12 fade-in">
+      <span class="section-number">02_EDUCATION</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Education</h2>
+      <div class="border border-border-color rounded-lg p-6">
+        <h3 class="font-mono text-base font-semibold text-text-secondary">B.S. Information Technology</h3>
+        <p class="text-sm text-terminal-green mt-1">AI Concentration</p>
+        <p class="text-sm text-text-secondary/70 mt-1">Strayer University</p>
+      </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section class="mb-12 fade-in">
+      <span class="section-number">03_EXPERIENCE // TIMELINE</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Experience</h2>
+      <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute left-[7px] top-2 bottom-2 w-px bg-border-color"></div>
+
+        <div class="space-y-8">
+          {experience.map((job) => (
+            <div class="relative pl-8">
+              <!-- Timeline dot -->
+              <div class="absolute left-0 top-2 w-[15px] h-[15px] rounded-full border-2 border-terminal-green bg-void-black"></div>
+              <div class="border border-border-color rounded-lg p-6 hover:border-terminal-green/30 transition-colors">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                  <h3 class="font-mono text-base font-semibold text-text-secondary">{job.title}</h3>
+                  <span class="font-mono text-xs text-alert-amber">{job.period}</span>
+                </div>
+                <p class="font-mono text-sm text-terminal-green/80 mb-3">{job.org}</p>
+                <p class="text-sm text-text-secondary/70 leading-relaxed">{job.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="mb-12 fade-in">
+      <span class="section-number">04_CERTIFICATIONS</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Certifications</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {certifications.map((cert) => (
+          <div class="border border-border-color rounded-lg p-4 text-center hover:border-terminal-green/30 transition-colors">
+            <div class="font-mono text-sm font-semibold text-text-secondary mb-1">{cert.name}</div>
+            <div class="font-mono text-[10px] text-terminal-green uppercase">{cert.status}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Skills Matrix -->
+    <section class="mb-12 fade-in">
+      <span class="section-number">05_SKILLS // MATRIX</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {Object.entries(skills).map(([category, items]) => (
+          <div class="border border-border-color rounded-lg p-6">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-4">{category}</h3>
+            <div class="flex flex-wrap gap-2">
+              {items.map((skill) => (
+                <span class="font-mono text-xs text-text-secondary/80 bg-terminal-green/5 border border-border-color px-3 py-1 rounded">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

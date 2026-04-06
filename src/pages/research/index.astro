@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const papers = (await getCollection('research')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<BaseLayout title="Research" description="Research publications and papers by Tristan Jessup">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="mb-12 fade-in">
+      <span class="section-number">01_RESEARCH // PUBLICATIONS</span>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Research</h1>
+      <p class="text-lg text-text-secondary/80">
+        Formal papers, frameworks, and technical writing on AI alignment, emergence, and coexistence.
+      </p>
+    </div>
+
+    {papers.length === 0 ? (
+      <div class="border border-border-color rounded-lg p-8 text-center fade-in">
+        <p class="font-mono text-sm text-text-secondary/60">No publications yet. Check back soon.</p>
+      </div>
+    ) : (
+      <div class="space-y-4 fade-in">
+        {papers.map((paper) => (
+          <a href={`/research/${paper.id}`} class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 group">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Paper</span>
+              <span class="font-mono text-xs text-border-color">{paper.data.date}</span>
+            </div>
+            <h2 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors mb-2">
+              {paper.data.title}
+            </h2>
+            <p class="text-sm text-text-secondary/70 leading-relaxed">{paper.data.description}</p>
+            {paper.data.authors && (
+              <p class="font-mono text-xs text-text-secondary/50 mt-3">
+                {paper.data.authors.join(', ')}
+              </p>
+            )}
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
