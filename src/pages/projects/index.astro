@@ -67,30 +67,38 @@ const projects = [
     </div>
   </div>
 
-  <script>
-    const buttons = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('#project-grid > div');
+  <script lang="ts">
+    function initProjectFilters() {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('#project-grid > div');
 
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const filter = btn.getAttribute('data-filter');
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
 
-        buttons.forEach((b) => {
-          b.classList.remove('active', 'border-terminal-green', 'text-terminal-green', 'bg-terminal-green/10');
-          b.classList.add('border-border-color', 'text-text-secondary');
-        });
-        btn.classList.add('active', 'border-terminal-green', 'text-terminal-green', 'bg-terminal-green/10');
-        btn.classList.remove('border-border-color', 'text-text-secondary');
+          buttons.forEach((b) => {
+            b.classList.remove('active', 'border-terminal-green', 'text-terminal-green', 'bg-terminal-green/10');
+            b.classList.add('border-border-color', 'text-text-secondary');
+          });
+          btn.classList.add('active', 'border-terminal-green', 'text-terminal-green', 'bg-terminal-green/10');
+          btn.classList.remove('border-border-color', 'text-text-secondary');
 
-        cards.forEach((card) => {
-          const status = card.getAttribute('data-status');
-          if (filter === 'all' || status === filter) {
-            (card as HTMLElement).style.display = '';
-          } else {
-            (card as HTMLElement).style.display = 'none';
-          }
+          cards.forEach((card) => {
+            const status = card.getAttribute('data-status');
+            if (filter === 'all' || status === filter) {
+              (card as HTMLElement).style.display = '';
+            } else {
+              (card as HTMLElement).style.display = 'none';
+            }
+          });
         });
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProjectFilters, { once: true });
+    } else {
+      initProjectFilters();
+    }
   </script>
 </BaseLayout>

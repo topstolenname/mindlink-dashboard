@@ -106,218 +106,265 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </div>
 
   <!-- Swarm Simulation Script -->
-  <script>
-    interface Agent {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-    }
-
-    const canvas = document.getElementById('swarm-canvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d')!;
-
-    const alphaSlider = document.getElementById('param-alpha') as HTMLInputElement;
-    const omegaSlider = document.getElementById('param-omega') as HTMLInputElement;
-    const nSlider = document.getElementById('param-n') as HTMLInputElement;
-    const alphaVal = document.getElementById('alpha-val')!;
-    const omegaVal = document.getElementById('omega-val')!;
-    const nVal = document.getElementById('n-val')!;
-    const telAgents = document.getElementById('tel-agents')!;
-    const telCoherence = document.getElementById('tel-coherence')!;
-    const telEntropy = document.getElementById('tel-entropy')!;
-    const telState = document.getElementById('tel-state')!;
-    const simState = document.getElementById('sim-state')!;
-
-    let alpha = 0.5;
-    let omega = 0.3;
-    let agentCount = 120;
-    let agents: Agent[] = [];
-
-    function resizeCanvas() {
-      const rect = canvas.parentElement!.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = 500;
-    }
-
-    function initAgents(n: number) {
-      agents = [];
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      for (let i = 0; i < n; i++) {
-        agents.push({
-          x: cx + (Math.random() - 0.5) * canvas.width * 0.6,
-          y: cy + (Math.random() - 0.5) * canvas.height * 0.6,
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2,
-        });
+  <script lang="ts">
+    function initSwarmSim() {
+      interface Agent {
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
       }
-    }
 
-    function update() {
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const canvas = document.getElementById('swarm-canvas') as HTMLCanvasElement | null;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-      for (const agent of agents) {
-        // Alignment force toward center
-        const dx = cx - agent.x;
-        const dy = cy - agent.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) + 0.01;
+      const alphaSlider = document.getElementById('param-alpha') as HTMLInputElement;
+      const omegaSlider = document.getElementById('param-omega') as HTMLInputElement;
+      const nSlider = document.getElementById('param-n') as HTMLInputElement;
+      const alphaVal = document.getElementById('alpha-val');
+      const omegaVal = document.getElementById('omega-val');
+      const nVal = document.getElementById('n-val');
+      const telAgents = document.getElementById('tel-agents');
+      const telCoherence = document.getElementById('tel-coherence');
+      const telEntropy = document.getElementById('tel-entropy');
+      const telState = document.getElementById('tel-state');
+      const simState = document.getElementById('sim-state');
 
-        agent.vx += (dx / dist) * alpha * 0.08;
-        agent.vy += (dy / dist) * alpha * 0.08;
+      let alpha = 0.5;
+      let omega = 0.3;
+      let agentCount = 120;
+      let agents: Agent[] = [];
 
-        // Entropy / chaos perturbation
-        agent.vx += (Math.random() - 0.5) * omega * 3;
-        agent.vy += (Math.random() - 0.5) * omega * 3;
+      // Spatial grid for O(n) neighbor lookups
+      const CELL_SIZE = 20; // matches separation radius sqrt(400)=20
+      let gridCols = 0;
+      let gridRows = 0;
+      let grid: Agent[][] = [];
 
-        // Local separation (avoid nearby agents)
-        for (const other of agents) {
-          if (other === agent) continue;
-          const sx = agent.x - other.x;
-          const sy = agent.y - other.y;
-          const sd = sx * sx + sy * sy;
-          if (sd < 400 && sd > 0) {
-            const sf = 1 / sd;
-            agent.vx += sx * sf * 2;
-            agent.vy += sy * sf * 2;
+      function buildGrid() {
+        gridCols = Math.ceil(canvas.width / CELL_SIZE) || 1;
+        gridRows = Math.ceil(canvas.height / CELL_SIZE) || 1;
+        grid = new Array(gridCols * gridRows);
+        for (let i = 0; i < grid.length; i++) grid[i] = [];
+        for (const agent of agents) {
+          const col = Math.min(Math.floor(agent.x / CELL_SIZE), gridCols - 1);
+          const row = Math.min(Math.floor(agent.y / CELL_SIZE), gridRows - 1);
+          if (col >= 0 && row >= 0) grid[row * gridCols + col].push(agent);
+        }
+      }
+
+      function getNeighbors(agent: Agent): Agent[] {
+        const col = Math.min(Math.max(Math.floor(agent.x / CELL_SIZE), 0), gridCols - 1);
+        const row = Math.min(Math.max(Math.floor(agent.y / CELL_SIZE), 0), gridRows - 1);
+        const neighbors: Agent[] = [];
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            const r = row + dr;
+            const c = col + dc;
+            if (r >= 0 && r < gridRows && c >= 0 && c < gridCols) {
+              const cell = grid[r * gridCols + c];
+              for (const other of cell) {
+                if (other !== agent) neighbors.push(other);
+              }
+            }
           }
         }
+        return neighbors;
+      }
 
-        // Damping
-        agent.vx *= 0.96;
-        agent.vy *= 0.96;
+      function resizeCanvas() {
+        const rect = canvas.parentElement!.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = 500;
+      }
 
-        // Speed limit
-        const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
-        if (speed > 4) {
-          agent.vx = (agent.vx / speed) * 4;
-          agent.vy = (agent.vy / speed) * 4;
+      function initAgents(n: number) {
+        agents = [];
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        for (let i = 0; i < n; i++) {
+          agents.push({
+            x: cx + (Math.random() - 0.5) * canvas.width * 0.6,
+            y: cy + (Math.random() - 0.5) * canvas.height * 0.6,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+          });
+        }
+      }
+
+      function update() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        buildGrid();
+
+        for (const agent of agents) {
+          // Alignment force toward center
+          const dx = cx - agent.x;
+          const dy = cy - agent.y;
+          const dist = Math.sqrt(dx * dx + dy * dy) + 0.01;
+
+          agent.vx += (dx / dist) * alpha * 0.08;
+          agent.vy += (dy / dist) * alpha * 0.08;
+
+          // Entropy / chaos perturbation
+          agent.vx += (Math.random() - 0.5) * omega * 3;
+          agent.vy += (Math.random() - 0.5) * omega * 3;
+
+          // Local separation via spatial grid (only check nearby neighbors)
+          const neighbors = getNeighbors(agent);
+          for (const other of neighbors) {
+            const sx = agent.x - other.x;
+            const sy = agent.y - other.y;
+            const sd = sx * sx + sy * sy;
+            if (sd < 400 && sd > 0) {
+              const sf = 1 / sd;
+              agent.vx += sx * sf * 2;
+              agent.vy += sy * sf * 2;
+            }
+          }
+
+          // Damping
+          agent.vx *= 0.96;
+          agent.vy *= 0.96;
+
+          // Speed limit
+          const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+          if (speed > 4) {
+            agent.vx = (agent.vx / speed) * 4;
+            agent.vy = (agent.vy / speed) * 4;
+          }
+
+          agent.x += agent.vx;
+          agent.y += agent.vy;
+
+          // Boundary wrap
+          if (agent.x < 0) agent.x = canvas.width;
+          if (agent.x > canvas.width) agent.x = 0;
+          if (agent.y < 0) agent.y = canvas.height;
+          if (agent.y > canvas.height) agent.y = 0;
+        }
+      }
+
+      function computeTelemetry() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        let totalDist = 0;
+        let totalSpeed = 0;
+
+        for (const agent of agents) {
+          const dx = agent.x - cx;
+          const dy = agent.y - cy;
+          totalDist += Math.sqrt(dx * dx + dy * dy);
+          totalSpeed += Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
         }
 
-        agent.x += agent.vx;
-        agent.y += agent.vy;
+        const maxDist = Math.sqrt(cx * cx + cy * cy) * agents.length;
+        const coherence = Math.max(0, 1 - totalDist / maxDist);
+        const entropy = totalSpeed / (agents.length * 4);
 
-        // Boundary wrap
-        if (agent.x < 0) agent.x = canvas.width;
-        if (agent.x > canvas.width) agent.x = 0;
-        if (agent.y < 0) agent.y = canvas.height;
-        if (agent.y > canvas.height) agent.y = 0;
-      }
-    }
-
-    function computeTelemetry() {
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-      let totalDist = 0;
-      let totalSpeed = 0;
-
-      for (const agent of agents) {
-        const dx = agent.x - cx;
-        const dy = agent.y - cy;
-        totalDist += Math.sqrt(dx * dx + dy * dy);
-        totalSpeed += Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+        return { coherence, entropy };
       }
 
-      const maxDist = Math.sqrt(cx * cx + cy * cy) * agents.length;
-      const coherence = Math.max(0, 1 - totalDist / maxDist);
-      const entropy = totalSpeed / (agents.length * 4);
+      function draw() {
+        ctx.fillStyle = 'rgba(2, 2, 2, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      return { coherence, entropy };
-    }
+        for (const agent of agents) {
+          const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
+          const intensity = Math.min(1, speed / 3);
 
-    function draw() {
-      ctx.fillStyle = 'rgba(2, 2, 2, 0.15)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+          const r = Math.floor(intensity * 255);
+          const g = Math.floor(255 - intensity * 80);
+          const b = Math.floor((1 - intensity) * 65);
 
-      for (const agent of agents) {
-        const speed = Math.sqrt(agent.vx * agent.vx + agent.vy * agent.vy);
-        const intensity = Math.min(1, speed / 3);
+          ctx.beginPath();
+          ctx.arc(agent.x, agent.y, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.9)`;
+          ctx.fill();
 
-        // Interpolate green→amber based on speed
-        const r = Math.floor(intensity * 255);
-        const g = Math.floor(255 - intensity * 80);
-        const b = Math.floor((1 - intensity) * 65);
-
-        ctx.beginPath();
-        ctx.arc(agent.x, agent.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.9)`;
-        ctx.fill();
-
-        // Trail
-        ctx.beginPath();
-        ctx.moveTo(agent.x, agent.y);
-        ctx.lineTo(agent.x - agent.vx * 3, agent.y - agent.vy * 3);
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(agent.x, agent.y);
+          ctx.lineTo(agent.x - agent.vx * 3, agent.y - agent.vy * 3);
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
       }
-    }
 
-    function updateUI() {
-      const tel = computeTelemetry();
+      function updateUI() {
+        const tel = computeTelemetry();
 
-      telAgents.textContent = String(agents.length);
-      telCoherence.textContent = tel.coherence.toFixed(3);
-      telEntropy.textContent = tel.entropy.toFixed(3);
+        if (telAgents) telAgents.textContent = String(agents.length);
+        if (telCoherence) telCoherence.textContent = tel.coherence.toFixed(3);
+        if (telEntropy) telEntropy.textContent = tel.entropy.toFixed(3);
 
-      const isStable = tel.coherence > 0.5 && tel.entropy < 0.5;
-      const isCritical = tel.entropy > tel.coherence;
+        const isStable = tel.coherence > 0.5 && tel.entropy < 0.5;
+        const isCritical = tel.entropy > tel.coherence;
 
-      if (isCritical) {
-        telState.textContent = 'CRITICAL';
-        telState.className = 'font-mono text-sm text-red-500';
-        simState.textContent = 'Critical';
-        simState.className = 'font-mono text-[10px] text-red-500 uppercase px-2 py-0.5 border border-red-500 rounded';
-      } else if (!isStable) {
-        telState.textContent = 'TURBULENT';
-        telState.className = 'font-mono text-sm text-alert-amber';
-        simState.textContent = 'Turbulent';
-        simState.className = 'font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded';
-      } else {
-        telState.textContent = 'STABLE';
-        telState.className = 'font-mono text-sm text-terminal-green';
-        simState.textContent = 'Stable';
-        simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded';
+        if (isCritical) {
+          if (telState) { telState.textContent = 'CRITICAL'; telState.className = 'font-mono text-sm text-red-500'; }
+          if (simState) { simState.textContent = 'Critical'; simState.className = 'font-mono text-[10px] text-red-500 uppercase px-2 py-0.5 border border-red-500 rounded'; }
+        } else if (!isStable) {
+          if (telState) { telState.textContent = 'TURBULENT'; telState.className = 'font-mono text-sm text-alert-amber'; }
+          if (simState) { simState.textContent = 'Turbulent'; simState.className = 'font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded'; }
+        } else {
+          if (telState) { telState.textContent = 'STABLE'; telState.className = 'font-mono text-sm text-terminal-green'; }
+          if (simState) { simState.textContent = 'Stable'; simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded'; }
+        }
       }
-    }
 
-    // Slider event listeners
-    alphaSlider.addEventListener('input', () => {
-      alpha = parseFloat(alphaSlider.value);
-      alphaVal.textContent = alpha.toFixed(2);
-    });
+      // Slider event listeners
+      alphaSlider?.addEventListener('input', () => {
+        alpha = parseFloat(alphaSlider.value);
+        if (alphaVal) alphaVal.textContent = alpha.toFixed(2);
+      });
 
-    omegaSlider.addEventListener('input', () => {
-      omega = parseFloat(omegaSlider.value);
-      omegaVal.textContent = omega.toFixed(2);
-    });
+      omegaSlider?.addEventListener('input', () => {
+        omega = parseFloat(omegaSlider.value);
+        if (omegaVal) omegaVal.textContent = omega.toFixed(2);
+      });
 
-    nSlider.addEventListener('input', () => {
-      agentCount = parseInt(nSlider.value);
-      nVal.textContent = String(agentCount);
-      initAgents(agentCount);
-    });
+      nSlider?.addEventListener('input', () => {
+        agentCount = parseInt(nSlider.value);
+        if (nVal) nVal.textContent = String(agentCount);
+        initAgents(agentCount);
+      });
 
-    let frameCount = 0;
-    function loop() {
-      update();
-      draw();
-      frameCount++;
-      if (frameCount % 10 === 0) updateUI();
-      requestAnimationFrame(loop);
-    }
+      let frameCount = 0;
+      function loop() {
+        update();
+        draw();
+        frameCount++;
+        if (frameCount % 10 === 0) updateUI();
+        requestAnimationFrame(loop);
+      }
 
-    // Initialize
-    resizeCanvas();
-    initAgents(agentCount);
-    simState.textContent = 'Running';
-    simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded';
-    loop();
-
-    window.addEventListener('resize', () => {
+      // Initialize
       resizeCanvas();
       initAgents(agentCount);
-    });
+      if (simState) {
+        simState.textContent = 'Running';
+        simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded';
+      }
+      loop();
+
+      // On resize, clamp agents to new bounds instead of resetting
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        for (const agent of agents) {
+          agent.x = Math.max(0, Math.min(agent.x, canvas.width));
+          agent.y = Math.max(0, Math.min(agent.y, canvas.height));
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSwarmSim, { once: true });
+    } else {
+      initSwarmSim();
+    }
   </script>
 </BaseLayout>

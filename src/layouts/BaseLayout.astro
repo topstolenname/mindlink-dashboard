@@ -227,103 +227,113 @@ const navLinks = [
     </style>
 
     <!-- Scripts -->
-    <script>
-      // Mobile menu toggle
-      const menuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      menuBtn?.addEventListener('click', () => {
-        mobileMenu?.classList.toggle('hidden');
-      });
+    <script lang="ts">
+      function initSiteScripts() {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn?.addEventListener('click', () => {
+          mobileMenu?.classList.toggle('hidden');
+        });
 
-      // Scroll-triggered fade-in via IntersectionObserver
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-      );
+        // Scroll-triggered fade-in via IntersectionObserver
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
 
-      document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
 
-      // Matrix Rain Easter Egg
-      const logo = document.getElementById('laughing-man-logo');
-      const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
+        // Matrix Rain Easter Egg
+        const logo = document.getElementById('laughing-man-logo');
+        const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
 
-      let matrixActive = false;
-      let matrixAnimId: number | null = null;
+        let matrixActive = false;
+        let matrixAnimId: number | null = null;
+        let matrixTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-      logo?.addEventListener('click', () => {
-        if (matrixActive) {
+        function stopMatrix() {
           matrixActive = false;
           if (matrixAnimId) cancelAnimationFrame(matrixAnimId);
+          if (matrixTimeoutId) { clearTimeout(matrixTimeoutId); matrixTimeoutId = null; }
           canvas?.classList.add('hidden');
           const ctx = canvas?.getContext('2d');
           if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
-          return;
         }
 
-        matrixActive = true;
-        canvas?.classList.remove('hidden');
-
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const fontSize = 14;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops: number[] = new Array(columns).fill(1);
-        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
-
-        function drawMatrix() {
-          if (!ctx || !canvas || !matrixActive) return;
-
-          ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-          ctx.fillStyle = '#00ff41';
-          ctx.font = `${fontSize}px 'Fira Code', monospace`;
-
-          for (let i = 0; i < drops.length; i++) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-              drops[i] = 0;
-            }
-            drops[i]++;
-          }
-
-          matrixAnimId = requestAnimationFrame(drawMatrix);
-        }
-
-        drawMatrix();
-
-        // Auto-stop after 8 seconds
-        setTimeout(() => {
+        logo?.addEventListener('click', () => {
           if (matrixActive) {
-            matrixActive = false;
-            if (matrixAnimId) cancelAnimationFrame(matrixAnimId);
-            canvas.classList.add('hidden');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stopMatrix();
+            return;
           }
-        }, 8000);
-      });
 
-      // Resize handler for matrix canvas
-      window.addEventListener('resize', () => {
-        if (canvas) {
+          matrixActive = true;
+          canvas?.classList.remove('hidden');
+
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
-        }
-      });
+
+          const fontSize = 14;
+          const columns = Math.floor(canvas.width / fontSize);
+          const drops: number[] = new Array(columns).fill(1);
+          const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+
+          function drawMatrix() {
+            if (!ctx || !canvas || !matrixActive) return;
+
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = `${fontSize}px 'Fira Code', monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+              const char = chars[Math.floor(Math.random() * chars.length)];
+              ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+              if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+              }
+              drops[i]++;
+            }
+
+            matrixAnimId = requestAnimationFrame(drawMatrix);
+          }
+
+          drawMatrix();
+
+          // Auto-stop after 8 seconds (clear previous timer to avoid race)
+          if (matrixTimeoutId) clearTimeout(matrixTimeoutId);
+          matrixTimeoutId = setTimeout(() => {
+            if (matrixActive) stopMatrix();
+          }, 8000);
+        });
+
+        // Resize handler for matrix canvas
+        window.addEventListener('resize', () => {
+          if (canvas) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSiteScripts, { once: true });
+      } else {
+        initSiteScripts();
+      }
     </script>
   </body>
 </html>

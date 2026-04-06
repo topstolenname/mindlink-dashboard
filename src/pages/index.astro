@@ -109,7 +109,8 @@ import ProjectCard from '../components/ProjectCard.astro';
   </section>
 
   <!-- Terminal Animation Script -->
-  <script>
+  <script lang="ts">
+    function initTerminal() {
     const lines = [
       { text: '> Initializing AGI-SAC Core...', color: 'text-terminal-green', delay: 0 },
       { text: '  [OK] swarm_coherence module loaded', color: 'text-terminal-green/70', delay: 600 },
@@ -166,5 +167,12 @@ import ProjectCard from '../components/ProjectCard.astro';
 
     // Start after a brief delay
     setTimeout(runBootSequence, 500);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTerminal, { once: true });
+    } else {
+      initTerminal();
+    }
   </script>
 </BaseLayout>
