@@ -1,0 +1,329 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'AI Researcher, Independent Developer, Founder of Mindlink Research Group LLC' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/resume', label: 'Resume' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/research', label: 'Research' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} | laughing-man.net</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-void-black text-text-secondary min-h-screen font-body">
+    <!-- CRT Scanline Overlay -->
+    <div class="crt-overlay" aria-hidden="true"></div>
+
+    <!-- Matrix Rain Canvas (easter egg) -->
+    <canvas id="matrix-canvas" class="fixed inset-0 z-[9999] pointer-events-none hidden"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-border-color bg-void-black/95 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Laughing Man Logo -->
+          <button
+            id="laughing-man-logo"
+            class="flex items-center gap-2 text-terminal-green hover:text-alert-amber transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            title="I thought what I'd do was, I'd pretend I was one of those deaf-mutes"
+            aria-label="Laughing Man logo — click for a surprise"
+          >
+            <svg viewBox="0 0 100 100" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="50" cy="50" r="45" />
+              <circle cx="50" cy="50" r="35" />
+              <circle cx="38" cy="42" r="4" fill="currentColor" />
+              <circle cx="62" cy="42" r="4" fill="currentColor" />
+              <path d="M 35 60 Q 50 72 65 60" stroke-width="2.5" stroke-linecap="round" />
+              <text x="50" y="88" text-anchor="middle" fill="currentColor" font-size="6" font-family="Fira Code, monospace" letter-spacing="1">LM</text>
+            </svg>
+            <span class="font-mono text-sm font-semibold hidden sm:inline">laughing-man.net</span>
+          </button>
+
+          <!-- Desktop Nav -->
+          <div class="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <a
+                href={link.href}
+                class:list={[
+                  'font-mono text-xs px-3 py-2 rounded transition-colors duration-200',
+                  currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+                    ? 'text-terminal-green bg-terminal-green/10'
+                    : 'text-text-secondary hover:text-terminal-green hover:bg-terminal-green/5',
+                ]}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-btn"
+            class="md:hidden text-text-secondary hover:text-terminal-green transition-colors bg-transparent border-none cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Nav -->
+        <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-border-color mt-2 pt-2">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                'block font-mono text-xs px-3 py-2 rounded transition-colors duration-200',
+                currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+                  ? 'text-terminal-green bg-terminal-green/10'
+                  : 'text-text-secondary hover:text-terminal-green',
+              ]}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 min-h-screen">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border-color mt-20 py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="font-mono text-terminal-green text-sm font-semibold mb-3">01_LINKS</h3>
+            <div class="flex flex-col gap-2">
+              <a href="https://github.com/topstolenname" class="text-text-secondary hover:text-terminal-green text-sm transition-colors" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://linkedin.com/in/tristanjessup" class="text-text-secondary hover:text-terminal-green text-sm transition-colors" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-mono text-terminal-green text-sm font-semibold mb-3">02_CONTACT</h3>
+            <a href="/contact" class="text-text-secondary hover:text-terminal-green text-sm transition-colors">Get in touch</a>
+          </div>
+          <div>
+            <h3 class="font-mono text-terminal-green text-sm font-semibold mb-3">03_ORG</h3>
+            <p class="text-text-secondary text-sm">Mindlink Research Group LLC</p>
+          </div>
+        </div>
+        <div class="border-t border-border-color mt-8 pt-6 text-center">
+          <p class="font-mono text-xs text-border-color">
+            &copy; {new Date().getFullYear()} Tristan Jessup. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Global Styles -->
+    <style is:global>
+      :root {
+        --void-black: #050505;
+        --terminal-green: #00ff41;
+        --alert-amber: #ffb000;
+        --text-secondary: #e0e0e0;
+        --border-color: #333333;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* CRT Scanline Overlay */
+      .crt-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.03) 0px,
+          rgba(0, 0, 0, 0.03) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      }
+
+      /* Scroll-triggered fade-in */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Selection color */
+      ::selection {
+        background: rgba(0, 255, 65, 0.2);
+        color: #00ff41;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #050505;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #333333;
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #00ff41;
+      }
+
+      /* Section number styling */
+      .section-number {
+        font-family: 'Fira Code', monospace;
+        color: var(--terminal-green);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+    </style>
+
+    <!-- Scripts -->
+    <script>
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuBtn?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+      });
+
+      // Scroll-triggered fade-in via IntersectionObserver
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+      // Matrix Rain Easter Egg
+      const logo = document.getElementById('laughing-man-logo');
+      const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
+
+      let matrixActive = false;
+      let matrixAnimId: number | null = null;
+
+      logo?.addEventListener('click', () => {
+        if (matrixActive) {
+          matrixActive = false;
+          if (matrixAnimId) cancelAnimationFrame(matrixAnimId);
+          canvas?.classList.add('hidden');
+          const ctx = canvas?.getContext('2d');
+          if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+
+        matrixActive = true;
+        canvas?.classList.remove('hidden');
+
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops: number[] = new Array(columns).fill(1);
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+
+        function drawMatrix() {
+          if (!ctx || !canvas || !matrixActive) return;
+
+          ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          ctx.fillStyle = '#00ff41';
+          ctx.font = `${fontSize}px 'Fira Code', monospace`;
+
+          for (let i = 0; i < drops.length; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+          }
+
+          matrixAnimId = requestAnimationFrame(drawMatrix);
+        }
+
+        drawMatrix();
+
+        // Auto-stop after 8 seconds
+        setTimeout(() => {
+          if (matrixActive) {
+            matrixActive = false;
+            if (matrixAnimId) cancelAnimationFrame(matrixAnimId);
+            canvas.classList.add('hidden');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }, 8000);
+      });
+
+      // Resize handler for matrix canvas
+      window.addEventListener('resize', () => {
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      });
+    </script>
+  </body>
+</html>

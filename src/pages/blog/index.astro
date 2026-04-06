@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const categoryColors: Record<string, string> = {
+  opinion: 'text-alert-amber bg-alert-amber/10 border-alert-amber',
+  'ai-ethics': 'text-terminal-green bg-terminal-green/10 border-terminal-green',
+  'project-updates': 'text-text-secondary bg-text-secondary/10 border-text-secondary',
+};
+---
+
+<BaseLayout title="Blog" description="Writing on AI, ethics, and research — by Tristan Jessup">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="mb-12 fade-in">
+      <span class="section-number">01_BLOG // INDEX</span>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Blog</h1>
+      <p class="text-lg text-text-secondary/80">
+        Thoughts on AI research, ethics, project updates, and the future of intelligence.
+      </p>
+    </div>
+
+    {posts.length === 0 ? (
+      <div class="border border-border-color rounded-lg p-8 text-center fade-in">
+        <p class="font-mono text-sm text-text-secondary/60">No posts yet. Check back soon.</p>
+      </div>
+    ) : (
+      <div class="space-y-4 fade-in">
+        {posts.map((post) => (
+          <a href={`/blog/${post.id}`} class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 group">
+            <div class="flex items-center gap-3 mb-2">
+              <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', categoryColors[post.data.category] || 'text-text-secondary']}>
+                {post.data.category.replace('-', ' ')}
+              </span>
+              <span class="font-mono text-xs text-border-color">{post.data.date}</span>
+            </div>
+            <h2 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors mb-2">
+              {post.data.title}
+            </h2>
+            <p class="text-sm text-text-secondary/70 leading-relaxed">{post.data.description}</p>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>

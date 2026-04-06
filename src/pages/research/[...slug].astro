@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const papers = await getCollection('research');
+  return papers.map((paper) => ({
+    params: { slug: paper.id },
+    props: { paper },
+  }));
+}
+
+const { paper } = Astro.props;
+const { Content } = await render(paper);
+---
+
+<BaseLayout title={paper.data.title} description={paper.data.description}>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="mb-8 fade-in">
+      <a href="/research" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Research</a>
+      <div class="flex items-center gap-3 mt-4 mb-4">
+        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Paper</span>
+        <span class="font-mono text-xs text-border-color">{paper.data.date}</span>
+      </div>
+      <h1 class="font-mono text-2xl sm:text-3xl font-bold text-text-secondary">{paper.data.title}</h1>
+      {paper.data.authors && (
+        <p class="font-mono text-sm text-text-secondary/60 mt-3">
+          {paper.data.authors.join(', ')}
+        </p>
+      )}
+    </div>
+
+    <div class="prose prose-invert max-w-none fade-in">
+      <Content />
+    </div>
+  </article>
+
+  <style is:global>
+    .prose {
+      color: rgba(224, 224, 224, 0.85);
+      line-height: 1.8;
+    }
+    .prose h2, .prose h3, .prose h4 {
+      font-family: 'Fira Code', monospace;
+      color: #e0e0e0;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    .prose h2 { font-size: 1.25rem; }
+    .prose h3 { font-size: 1.1rem; }
+    .prose p { margin-bottom: 1.25rem; }
+    .prose a {
+      color: #00ff41;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .prose a:hover { color: #ffb000; }
+    .prose code {
+      font-family: 'Fira Code', monospace;
+      background: rgba(0, 255, 65, 0.05);
+      border: 1px solid #333333;
+      padding: 0.125rem 0.375rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+    .prose pre {
+      background: #0a0a0a;
+      border: 1px solid #333333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .prose pre code {
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .prose blockquote {
+      border-left: 3px solid #00ff41;
+      padding-left: 1rem;
+      color: rgba(224, 224, 224, 0.6);
+      font-style: italic;
+    }
+    .prose ul, .prose ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .prose li { margin-bottom: 0.5rem; }
+    .prose strong { color: #e0e0e0; }
+    .prose em { color: rgba(224, 224, 224, 0.7); }
+    .prose hr {
+      border-color: #333333;
+      margin: 2rem 0;
+    }
+  </style>
+</BaseLayout>
