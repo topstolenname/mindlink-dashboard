@@ -1,0 +1,67 @@
+{
+  "name": "Tristan Jessup",
+  "headline": "Applied AI systems & integration · Senior bench technician, Geek Squad",
+  "location": "Lexington, KY area",
+  "email": "tristan@mindlink.dev",
+  "site": "mindlink.dev",
+  "github": "github.com/topstolenname",
+  "linkedin": "linkedin.com/in/john-jessup25",
+  "summary": "Most senior bench technician at Geek Squad (Best Buy Store #259), CompTIA A+, Network+ and Security+ certified and an Apple Certified Repair Technician. I design agentic tooling that pairs small language models with scripted tools, and build AI governance experiments where every claim is mapped to a test. Seeking enterprise AI integration, AI solutions and AI architecture roles.",
+  "selectedWork": [
+    {
+      "title": "MCX: Meta-Concord reference implementation",
+      "link": "github.com/topstolenname/mcx-experiment",
+      "detail": "Python (Apache-2.0) reference implementation of domain-assent authorization for agent actions: Ed25519-signed evidence, a separately written verifier, a fail-closed enforcer, a red-team catalogue, and CLAIMS.md mapping each white-paper claim to a test or marking it not shown."
+    },
+    {
+      "title": "Emergent Divergence",
+      "link": "github.com/topstolenname/emergent-divergence",
+      "detail": "Controlled multi-agent LLM experiment (3 conditions × 2 backends × 4 seeds) with eight falsifiable hypotheses, a decoding-noise null baseline, full run provenance, and a hard cost cap. Pilot results published, including a non-significant trend."
+    },
+    {
+      "title": "Anvil (paused prototype)",
+      "link": "mindlink.dev/work/anvil",
+      "detail": "Architecture for a bench-diagnostics assistant: Markdown skill library, small language models first with escalation to larger tiers, and PowerShell tools behind a structured JSON contract."
+    },
+    {
+      "title": "Smaller builds",
+      "link": "",
+      "detail": "Local photo auto-tagging (Ollama vision model → exiftool metadata → Dolphin extended attributes); Home Assistant automation and a security audit of a third-party vehicle-integration repository."
+    }
+  ],
+  "experience": [
+    {
+      "title": "Advanced Repair Agent",
+      "org": "Best Buy / Geek Squad, Store #259",
+      "period": "Apr 2021 – Present",
+      "bullets": [
+        "Most senior bench technician in the store; mentor newer associates and take the most complex escalations.",
+        "Diagnose and repair hardware and software faults across Windows and macOS, including data recovery, NVMe/SSD cloning and migration, BIOS/UEFI issues, and malware remediation."
+      ]
+    },
+    {
+      "title": "Founder & independent researcher",
+      "org": "Mindlink Research Group",
+      "period": "2025 – Present",
+      "bullets": [
+        "Build and publish AI governance and multi-agent research code in the open, including MCX and Emergent Divergence.",
+        "Author of the Concord of Coexistence and the Meta-Concord draft 0.4 white paper."
+      ]
+    }
+  ],
+  "earlierRoles": [
+    { "title": "Sales", "org": "Tesla" },
+    { "title": "City Letter Carrier", "org": "United States Postal Service" },
+    { "title": "Customer Service Specialist", "org": "Top Drawer Furniture (furniture retail)" }
+  ],
+  "certifications": ["CompTIA A+", "CompTIA Network+", "CompTIA Security+", "Apple Certified Repair Technician"],
+  "education": [
+    { "degree": "B.S. Information Technology, AI concentration", "school": "Strayer University", "period": "In progress" },
+    { "degree": "General studies coursework", "school": "University of Kentucky", "period": "2008 – 2010" }
+  ],
+  "skills": {
+    "AI systems": ["Agentic tool use & orchestration", "Small and local models (Ollama)", "Multi-agent experiment design", "LLM evaluation & behavioural analysis", "AI governance & authorization design", "Claim-to-evidence documentation"],
+    "Developer tools": ["Claude Code", "Cursor", "MCP", "Open-WebUI", "Python", "PowerShell", "Bash", "Git", "Docker", "Obsidian"],
+    "Systems & hardware": ["Windows & macOS diagnostics", "Linux (Kubuntu, Arch, CachyOS)", "Data recovery", "NVMe/SSD cloning & migration", "BIOS/UEFI", "Endpoint security & malware remediation", "Networking"]
+  }
+}
