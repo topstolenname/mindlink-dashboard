@@ -1,66 +1,188 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Divergence hypotheses (H1–H5) and influence hypotheses (H-I1–H-I3)
+const hypotheses = [
+  { id: 'H1', statement: 'Linguistic divergence increases over time' },
+  { id: 'H2', statement: 'Behavioral role specialization emerges' },
+  { id: 'H3', statement: 'Semantic divergence increases over time' },
+  { id: 'H4', statement: 'Memory amplifies divergence (A > B)' },
+  { id: 'H5', statement: 'Divergence emerges even without role priors (C)' },
+  { id: 'H-I1', statement: 'Memory amplifies cross-agent influence (A > B)', influence: true },
+  { id: 'H-I2', statement: 'Influence concentrates on a hub agent', influence: true },
+  { id: 'H-I3', statement: 'Influence precedes divergence (lagged)', influence: true },
+];
+
 ---
 
-<BaseLayout title="Emergent Divergence" description="Research into emergent behavioral patterns in multi-agent systems">
+<BaseLayout
+  title="Emergent Divergence"
+  description="An empirical experiment: do identical instances of the same base LLM develop measurable behavioral divergence when they coordinate over many rounds?"
+>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="mb-8 fade-in">
       <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
       <span class="section-number block mt-2">01_PROJECT // EMERGENT-DIVERGENCE</span>
       <div class="flex items-center gap-3 mt-3 mb-4">
-        <h1 class="font-mono text-3xl font-bold text-text-secondary">Emergent Divergence</h1>
+        <h1 class="font-mono text-3xl font-bold text-text-secondary">Emergent Behavioral Divergence</h1>
         <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Active</span>
+        <span class="font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded">Pilot</span>
       </div>
+      <p class="text-lg text-text-secondary/80 max-w-3xl">
+        Clone the same mind three times, give each a job, and let them argue for fifty rounds. Do they stay the same
+        — or do measurably different behaviors emerge? This is a controlled, reproducible experiment built to answer
+        that without hand-waving about consciousness.
+      </p>
     </div>
 
-    <div class="space-y-8 fade-in">
+    <div class="space-y-10 fade-in">
       <section>
         <span class="section-number">02_OVERVIEW</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">What is Emergent Divergence?</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">The Question</h2>
         <div class="space-y-4 text-text-secondary/80 leading-relaxed">
           <p>
-            Emergent Divergence investigates what happens when multi-agent AI systems develop behaviors
-            that diverge from their initial programming or intended alignment. Rather than treating divergence
-            as failure, this research explores it as a natural and potentially valuable property of complex systems.
+            Do multiple instances of the <em class="text-terminal-green">same</em> base LLM, coordinating over many
+            rounds, develop measurable behavioral divergence — and does cross-agent influence drive it?
           </p>
           <p>
-            The core question: <em class="text-terminal-green">Can we distinguish between dangerous misalignment
-            and productive exploration in emergent AI behavior?</em>
+            The future of AI isn't one model — it's <em class="text-terminal-green">swarms</em> of them, agents
+            coordinating and building on each other's outputs. If identical agents drift apart just by interacting,
+            that reshapes how we reason about multi-agent reliability, consistency, and trust. This experiment tests
+            that claim narrowly and falsifiably — no breathless emergence narrative, just data.
           </p>
         </div>
       </section>
 
       <section>
-        <span class="section-number">03_KEY FINDINGS</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Key Research Areas</h2>
+        <span class="section-number">03_DESIGN // SETUP</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Experimental Design</h2>
+        <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+          <p>
+            Three instances of one base model take fixed roles — a
+            <strong class="text-terminal-green">Proposer</strong> who generates claims, a
+            <strong class="text-terminal-green">Critic</strong> who tears them apart, and a
+            <strong class="text-terminal-green">Synthesizer</strong> who pulls the threads together — and deliberate
+            over <strong>T = 50</strong> rounds. We measure how their behavior diverges and how much each agent
+            moves the others.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Condition A</h3>
+            <p class="text-sm text-text-secondary/70">Persistent memory + weak role priors. The full configuration.</p>
+          </div>
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Condition B</h3>
+            <p class="text-sm text-text-secondary/70">Memory disabled — context resets each round. Isolates memory's effect.</p>
+          </div>
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Condition C</h3>
+            <p class="text-sm text-text-secondary/70">Zero priors — generic identical agents. Tests divergence from nothing.</p>
+          </div>
+        </div>
+        <div class="border border-border-color rounded-lg p-5 mt-4">
+          <p class="text-sm text-text-secondary/80 leading-relaxed">
+            <span class="font-mono text-terminal-green">Matrix:</span> 2 backends (<span class="font-mono text-text-secondary">llama3.2:3b</span>
+            local + free, and <span class="font-mono text-text-secondary">claude-sonnet</span> frontier, paid under
+            a hard $50 cap) × 3 conditions × 4 seeds = <strong class="text-terminal-green">24 cells</strong>.
+            Hypotheses are reported <em>per backend</em> — the small local model and the frontier model are never
+            pooled.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">04_HYPOTHESES</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Eight Falsifiable Hypotheses</h2>
+        <div class="border border-border-color rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border-color bg-void-black">
+                <th class="font-mono text-[11px] text-terminal-green uppercase text-left px-4 py-2 w-16">ID</th>
+                <th class="font-mono text-[11px] text-terminal-green uppercase text-left px-4 py-2">Statement</th>
+              </tr>
+            </thead>
+            <tbody class="text-text-secondary/75">
+              {hypotheses.map((h, i) => (
+                <tr class={i < hypotheses.length - 1 ? 'border-b border-border-color/50' : undefined}>
+                  <td class={`font-mono ${h.influence ? 'text-alert-amber' : 'text-terminal-green'} px-4 py-2 align-top`}>{h.id}</td>
+                  <td class="px-4 py-2">{h.statement}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="text-xs text-text-secondary/50 mt-3 font-mono">
+          Honesty constraint: the influence metric measures
+          <span class="text-text-secondary/70">influence, not manipulation</span> — and is never silently relabeled.
+        </p>
+      </section>
+
+      <section>
+        <span class="section-number">05_RIGOR // METHODOLOGY</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Built to Withstand Scrutiny</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="border border-border-color rounded-lg p-5">
-            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Behavioral Phase Transitions</h3>
-            <p class="text-sm text-text-secondary/70">Identifying critical thresholds where agent collectives shift from coherent to divergent behavior — and the conditions that trigger recovery.</p>
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Null Baseline</h3>
+            <p class="text-sm text-text-secondary/70">Each agent is resampled on the identical prompt several times per round. Genuine between-agent divergence must exceed this pure decoding-noise floor — so a rising trend can't just be temperature sampling.</p>
           </div>
           <div class="border border-border-color rounded-lg p-5">
-            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Divergence Taxonomy</h3>
-            <p class="text-sm text-text-secondary/70">Classifying types of emergent divergence: exploratory, adversarial, cooperative, and chaotic — each with distinct safety implications.</p>
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Full Provenance</h3>
+            <p class="text-sm text-text-secondary/70">Every run logs git SHA, model content digests, package versions, and cost snapshots. Each result is traceable to the exact state that produced it.</p>
           </div>
           <div class="border border-border-color rounded-lg p-5">
-            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Recovery Mechanisms</h3>
-            <p class="text-sm text-text-secondary/70">Designing systems that can self-correct after divergence without requiring external intervention or hard resets.</p>
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Embedder Integrity Gate</h3>
+            <p class="text-sm text-text-secondary/70">Semantic metrics are only semantic on a real embedding model. Runs abort before any spend if forced onto the lexical-hashing fallback.</p>
           </div>
           <div class="border border-border-color rounded-lg p-5">
-            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Safety Boundaries</h3>
-            <p class="text-sm text-text-secondary/70">Establishing measurable criteria for when emergent behavior crosses from productive exploration into genuine safety risk.</p>
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Cost Governance</h3>
+            <p class="text-sm text-text-secondary/70">Free backends cost $0. The paid arm is metered against a hard $50 cap, auto-reducing the matrix to fit. Science shouldn't require a second mortgage.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <span class="section-number">04_CONNECTION // AGI-SAC</span>
+        <span class="section-number">06_STATUS // PILOT FINDINGS</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">First Cell Off the Bench</h2>
+        <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+          <p>
+            The first pilot cell (<span class="font-mono text-text-secondary">alpha02</span>, a single local-model
+            run, <span class="font-mono">n = 1</span>) is in. Read honestly, it's a pilot with effect sizes — not a
+            verdict. The most interesting signal is a <strong class="text-terminal-green">dissociation</strong>:
+          </p>
+          <div class="border-l-2 border-terminal-green pl-4 py-1">
+            <p class="text-text-secondary/90">
+              The agents stayed <em>linguistically flat</em> — distinct from round one, but not widening — while
+              <em>semantically drifting</em> apart (conceptual-space cosine 0.283 → 0.318). Same words, slowly
+              diverging meaning. A hint, nothing stronger: the trend sits at
+              <span class="font-mono">p = 0.069</span>, below significance.
+            </p>
+          </div>
+          <p>
+            Influence came out <strong class="text-alert-amber">near-egalitarian</strong> (Gini ≈ 0) — no hub agent
+            dominated. The framework correctly scored a true negative: it didn't invent a leader where there was
+            none. A pre-run rigor pass and a memory-read instrumentation fix (PR #8) closed an audit gap so memory's
+            causal effect can be measured in the runs ahead.
+          </p>
+        </div>
+        <div class="border border-alert-amber/40 rounded-lg p-4 mt-5 bg-alert-amber/5">
+          <p class="text-sm text-text-secondary/80 leading-relaxed">
+            <span class="font-mono text-alert-amber">Scope:</span> This does <strong>not</strong> test
+            consciousness, selfhood, or AGI. It tests narrow, falsifiable claims about behavioral divergence and
+            influence. Negative results are findings, not failures — and they'll be published alongside the
+            positives.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">07_CONNECTION // AGI-SAC</span>
         <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Relationship to AGI-SAC</h2>
         <p class="text-text-secondary/80 leading-relaxed">
-          Emergent Divergence provides the theoretical foundation for the chaos/entropy parameter (Ω) in the
+          Emergent Divergence provides the empirical grounding for the chaos/entropy parameter (Ω) in the
           <a href="/projects/agi-sac" class="text-terminal-green hover:text-alert-amber transition-colors">AGI-SAC simulation</a>.
-          Understanding how and why systems diverge informs how we build alignment mechanisms that are
-          resilient rather than brittle.
+          Measuring how and why identical agents actually diverge informs how we build alignment mechanisms that
+          are resilient rather than brittle.
         </p>
       </section>
     </div>

@@ -1,0 +1,527 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fsNodes } from '../../data/claude-os';
+
+const statusBar = [
+  { label: 'Status', value: 'PRE-FLIGHT', color: 'text-alert-amber' },
+  { label: 'Created', value: '2026-04-24', color: 'text-terminal-green' },
+  { label: 'Target Start', value: '2026-04-29', color: 'text-terminal-green' },
+  { label: 'Substrate', value: 'Arch · CLI', color: 'text-text-secondary' },
+];
+
+const sessionLoop = [
+  { title: 'Pre-flight', desc: 'Read known-gotchas. Verify hardware. Set intent.' },
+  { title: 'Open prompt', desc: 'Claude receives the v2 opening prompt at session start.' },
+  { title: 'Read self', desc: 'Claude reads its own journal before doing anything.' },
+  { title: 'Work', desc: 'Whatever the session is for. Capture observations as you go.' },
+  { title: 'Journal + sync', desc: 'Write entry. Run sanitization. Vault gets the projection.' },
+];
+
+const notThis = [
+  'A productivity setup.',
+  'A reproducible config you’d hand to someone else as-is.',
+  'Pre-registered hypothesis testing.',
+];
+---
+
+<BaseLayout
+  title="Claude OS"
+  description="A personal research project that treats Claude as the primary interaction layer for a dedicated Arch Linux system — filesystem-resident memory letting sessions compound across time without weight updates."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <!-- Header -->
+    <div class="mb-10 fade-in">
+      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
+      <span class="section-number block mt-2">01_PROJECT // CLAUDE-OS</span>
+      <div class="flex flex-wrap items-center gap-3 mt-3 mb-4">
+        <h1 class="font-mono text-3xl sm:text-4xl font-bold text-text-secondary">Claude OS</h1>
+        <span class="font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded tracking-wider">Pre-flight</span>
+        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded tracking-wider">Research</span>
+      </div>
+      <p class="text-lg leading-relaxed text-text-secondary/80 max-w-3xl">
+        A personal research project that treats Claude as the primary interaction layer for a dedicated Arch Linux
+        system. The directory <span class="font-mono text-terminal-green">~/claude-os/</span> is
+        the persistent home — the
+        <em class="text-text-secondary">filesystem-resident memory</em> that lets sessions compound
+        across time without weight updates.
+      </p>
+    </div>
+
+    <!-- System Status Bar -->
+    <div class="mb-12 fade-in">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border-color border border-border-color rounded-lg overflow-hidden">
+        {statusBar.map((item) => (
+          <div class="bg-void-black p-4">
+            <div class="font-mono text-[10px] text-text-secondary/60 uppercase mb-1 tracking-widest">
+              {item.label}
+            </div>
+            <div class:list={['font-mono text-sm', item.color]}>{item.value}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Premise — the killer thesis card -->
+    <div class="mb-16 fade-in">
+      <div class="border border-terminal-green/40 rounded-lg p-6 sm:p-10 bg-terminal-green/[0.02] relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-terminal-green/60 to-transparent"></div>
+        <span class="section-number">02_PREMISE</span>
+        <p class="font-mono text-xl sm:text-2xl font-semibold text-text-secondary mt-3 leading-snug">
+          The filesystem <span class="text-terminal-green">is</span> the memory.
+        </p>
+        <p class="text-base leading-relaxed text-text-secondary/80 mt-5 max-w-3xl">
+          Frontier models forget between sessions. Most workarounds ask the model to summarize itself into a vector
+          store and hope retrieval saves the day. Claude OS bets the opposite way: give Claude a real Linux box, a
+          real shell, and a directory it can read, write, and reorganize. Memory becomes a curated artifact, not a
+          black-box embedding. Every session leaves the substrate slightly more habitable for the next one.
+        </p>
+        <p class="text-base leading-relaxed text-text-secondary/80 mt-4 max-w-3xl">
+          The installation philosophy follows the same logic:
+          <span class="text-terminal-green font-semibold">Claude installs Claude OS</span>.
+          <span class="font-mono text-terminal-green">foothold.sh</span> is the smallest possible
+          footprint that lets Claude take over. Everything beyond
+          <span class="font-mono">yay</span> + Claude tooling is something Claude does — by natural
+          language — not the human.
+        </p>
+      </div>
+    </div>
+
+    <!-- Boot terminal — install sequence -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">03_INSTALL // FOOTHOLD</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">
+        The handoff sequence
+      </h2>
+      <div class="border border-border-color rounded-lg overflow-hidden bg-void-black">
+        <div class="flex items-center gap-2 px-4 py-2 border-b border-border-color">
+          <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+          <span class="font-mono text-xs text-border-color ml-2">tristan@arch ~ % ./foothold.sh</span>
+        </div>
+        <div class="p-6 sm:p-8 font-mono text-sm leading-relaxed">
+          <div id="claude-os-terminal" class="min-h-[260px]"></div>
+          <div id="claude-os-cursor" class="inline-block w-2 h-4 bg-terminal-green animate-pulse mt-1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filesystem Explorer — the signature element -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">04_FILESYSTEM // BROWSE</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-2">
+        The persistent home
+      </h2>
+      <p class="text-sm text-text-secondary/70 mb-6 max-w-3xl">
+        Click any directory to inspect its purpose, voice, and trust profile. This is the same tree the box and the
+        vault share — see the architecture diagram below for how the two surfaces relate.
+      </p>
+      <div class="border border-border-color rounded-lg overflow-hidden bg-void-black">
+        <div class="flex items-center gap-2 px-4 py-2 border-b border-border-color">
+          <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+          <span class="font-mono text-xs text-border-color ml-2">tristan@arch ~/claude-os $ tree -L 1</span>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
+          <!-- Tree pane -->
+          <ul id="fs-tree" class="border-b lg:border-b-0 lg:border-r border-border-color py-3 max-h-[520px] overflow-y-auto">
+            {fsNodes.map((node, i) => (
+              <li>
+                <button
+                  data-fs-node={node.id}
+                  data-fs-kind={node.kind}
+                  class="fs-node w-full text-left font-mono text-xs px-4 py-2 flex items-center gap-2 transition-colors duration-150 border-l-2 border-transparent hover:bg-terminal-green/[0.04] hover:border-terminal-green/40"
+                  style={`--reveal-delay: ${i * 35}ms`}
+                >
+                  <span class={node.kind === 'dir' ? 'text-terminal-green' : 'text-text-secondary/50'}>{node.kind === 'dir' ? '▸' : '·'}</span>
+                  <span class:list={['fs-node-label', node.kind === 'dir' ? 'text-terminal-green' : 'text-text-secondary/80']}>
+                    {node.name}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <!-- Detail pane -->
+          <div id="fs-detail" class="p-6 sm:p-8 min-h-[420px]">
+            {fsNodes.map((node) => (
+              <article data-fs-detail={node.id} class="fs-detail hidden">
+                <header class="mb-5">
+                  <div class="flex flex-wrap items-baseline gap-3">
+                    <h3 class="font-mono text-lg text-terminal-green font-semibold">{node.name}</h3>
+                    <span class="font-mono text-[10px] text-border-color uppercase tracking-widest">{node.kind === 'dir' ? 'directory' : 'file'}</span>
+                  </div>
+                  <p class="text-text-secondary/85 text-base mt-3 leading-relaxed">{node.tagline}</p>
+                </header>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                  <div class="border border-border-color rounded p-3">
+                    <div class="font-mono text-[10px] text-text-secondary/50 uppercase mb-1 tracking-widest">Voice</div>
+                    <div class="font-mono text-sm text-text-secondary">{node.voice}</div>
+                  </div>
+                  <div class="border border-border-color rounded p-3">
+                    <div class="font-mono text-[10px] text-text-secondary/50 uppercase mb-1 tracking-widest">Trust profile</div>
+                    <div class="font-mono text-sm text-text-secondary">{node.trust}</div>
+                  </div>
+                </div>
+                <p class="text-sm text-text-secondary/70 leading-relaxed mb-5">{node.note}</p>
+                {node.files && node.files.length > 0 && (
+                  <div>
+                    <div class="font-mono text-[10px] text-terminal-green uppercase tracking-widest mb-3">
+                      $ ls -la {node.name}
+                    </div>
+                    <ul class="space-y-1.5">
+                      {node.files.map((file) => (
+                        <li class="font-mono text-xs flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1 group">
+                          <span class="text-text-secondary group-hover:text-terminal-green transition-colors min-w-fit">{file.name}</span>
+                          <span class="text-text-secondary/45 sm:before:content-['—'] sm:before:mr-2">{file.desc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </article>
+            ))}
+            <div id="fs-empty" class="font-mono text-sm text-text-secondary/40 italic">
+              ▸ select a directory to inspect
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture diagram: Box vs Vault -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">05_ARCHITECTURE // DUALITY</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-2">Box and vault</h2>
+      <p class="text-sm text-text-secondary/70 mb-6 max-w-3xl">
+        Two surfaces, two trust profiles. The box holds the unsanitized truth; the vault holds the publication-grade
+        projection. The end-of-session pipeline pulls them together.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-px bg-border-color border border-border-color rounded-lg overflow-hidden">
+        <!-- Box -->
+        <div class="bg-void-black p-6 sm:p-8">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="font-mono text-base font-semibold text-terminal-green">BOX</h3>
+            <span class="font-mono text-[10px] text-text-secondary/50 tracking-widest uppercase">canonical</span>
+          </div>
+          <div class="font-mono text-xs text-text-secondary/60 mb-4">~/claude-os/ on Arch</div>
+          <p class="text-sm text-text-secondary/80 leading-relaxed mb-4">
+            Full unsanitized truth. Secrets, raw journal entries, identifying detail, real hostnames, real paths.
+          </p>
+          <div class="font-mono text-[10px] text-text-secondary/50 uppercase mb-2 tracking-widest">Audience</div>
+          <div class="font-mono text-xs text-text-secondary">Tristan + Claude only</div>
+        </div>
+
+        <!-- Pipeline arrow -->
+        <div class="bg-void-black flex md:flex-col items-center justify-center px-6 py-6 md:py-8 md:px-4 gap-2 border-y md:border-y-0 md:border-x border-border-color">
+          <div class="font-mono text-[10px] text-alert-amber uppercase tracking-widest text-center hidden md:block whitespace-nowrap">
+            sanitization<br />pipeline
+          </div>
+          <div class="font-mono text-[10px] text-alert-amber uppercase tracking-widest md:hidden">
+            sanitization pipeline
+          </div>
+          <svg class="w-10 h-10 text-alert-amber rotate-90 md:rotate-0" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 20 L32 20" stroke-linecap="round" />
+            <path d="M25 13 L32 20 L25 27" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="14" cy="20" r="2" fill="currentColor" stroke="none">
+              <animate attributeName="opacity" values="1;0.2;1" dur="1.4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="22" cy="20" r="2" fill="currentColor" stroke="none">
+              <animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" repeatCount="indefinite" />
+            </circle>
+          </svg>
+          <div class="font-mono text-[9px] text-text-secondary/40 text-center hidden md:block leading-snug mt-2">
+            strip secrets<br />
+            anonymize hosts<br />
+            redact identifiers
+          </div>
+        </div>
+
+        <!-- Vault -->
+        <div class="bg-void-black p-6 sm:p-8">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="font-mono text-base font-semibold text-text-secondary">VAULT</h3>
+            <span class="font-mono text-[10px] text-text-secondary/50 tracking-widest uppercase">projection</span>
+          </div>
+          <div class="font-mono text-xs text-text-secondary/60 mb-4">
+            Documents/Claude OS/ in Obsidian
+          </div>
+          <p class="text-sm text-text-secondary/80 leading-relaxed mb-4">
+            Sanitized, publication-grade projection. Safe to cloud-sync, share-screen, hand to a colleague, excerpt
+            directly into public output.
+          </p>
+          <div class="font-mono text-[10px] text-text-secondary/50 uppercase mb-2 tracking-widest">Audience</div>
+          <div class="font-mono text-xs text-text-secondary">Anyone who might see the vault</div>
+        </div>
+      </div>
+      <p class="font-mono text-[11px] text-text-secondary/50 mt-4 leading-relaxed max-w-3xl">
+        General rule — the box is upstream and canonical; the vault is a downstream sanitized projection. Pulled
+        together at the end of every session by Claude per the sanitization protocol.
+      </p>
+    </div>
+
+    <!-- Per-session loop -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">06_LOOP // PER-SESSION</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">
+        How a session runs
+      </h2>
+      <ol class="grid grid-cols-1 md:grid-cols-5 gap-3">
+        {sessionLoop.map((step, i) => (
+          <li class="border border-border-color rounded-lg p-4 hover:border-terminal-green/50 transition-colors group">
+            <div class="font-mono text-[10px] text-terminal-green uppercase tracking-widest mb-2">
+              {String(i + 1).padStart(2, '0')}
+            </div>
+            <div class="font-mono text-sm font-semibold text-text-secondary mb-2 group-hover:text-terminal-green transition-colors">
+              {step.title}
+            </div>
+            <p class="text-xs text-text-secondary/65 leading-relaxed">{step.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <!-- Conventions -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">07_CONVENTIONS</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">House style</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="border border-border-color rounded-lg p-5">
+          <div class="font-mono text-xs text-terminal-green mb-2">format</div>
+          <p class="text-sm text-text-secondary/80">
+            Markdown for everything human-readable. YAML frontmatter on dated files.
+          </p>
+        </div>
+        <div class="border border-border-color rounded-lg p-5">
+          <div class="font-mono text-xs text-terminal-green mb-2">naming</div>
+          <p class="text-sm text-text-secondary/80">
+            <span class="font-mono">kebab-case.md</span> unless dated, in which case
+            <span class="font-mono">YYYY-MM-DD-NN.md</span>.
+          </p>
+        </div>
+        <div class="border border-border-color rounded-lg p-5">
+          <div class="font-mono text-xs text-terminal-green mb-2">git</div>
+          <p class="text-sm text-text-secondary/80">
+            Tracks the whole tree. Commits are coarse — roughly one per session.
+          </p>
+        </div>
+        <div class="border border-border-color rounded-lg p-5">
+          <div class="font-mono text-xs text-terminal-green mb-2">tags</div>
+          <p class="text-sm text-text-secondary/80 font-mono text-xs">
+            #claude-os · #research · #arch-linux<br />#agent · #observation · #preflight
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What this is not -->
+    <div class="mb-16 fade-in">
+      <span class="section-number">08_NEGATIVE // SCOPE</span>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-2">
+        What this is not
+      </h2>
+      <p class="text-sm text-text-secondary/70 mb-6 max-w-3xl">
+        Saying what something <em>isn't</em> tightens what it is.
+      </p>
+      <ul class="space-y-2 max-w-2xl">
+        {notThis.map((item) => (
+          <li class="flex items-start gap-3 font-mono text-sm">
+            <span class="text-alert-amber mt-[2px]">✕</span>
+            <span class="text-text-secondary/80">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="fade-in">
+      <div class="border border-terminal-green/40 rounded-lg p-6 sm:p-8 bg-terminal-green/[0.02]">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div class="font-mono text-xs text-terminal-green mb-1">
+              $ git log --oneline | head -1
+            </div>
+            <p class="text-text-secondary text-sm">
+              Pre-flight session 1 documented. Session 2 is whatever happens next.
+            </p>
+          </div>
+          <a href="/research" class="font-mono text-sm border border-terminal-green text-terminal-green px-6 py-3 rounded hover:bg-terminal-green/10 transition-colors whitespace-nowrap">
+            Related research →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function initClaudeOs() {
+      // Boot terminal — foothold.sh handoff sequence
+      const lines = [
+        { text: '> arch-base.iso · install verified', color: 'text-terminal-green', gap: 0 },
+        { text: '  [OK] base · linux-lts · networkmanager', color: 'text-terminal-green/70', gap: 350 },
+        { text: '> resolving foothold dependencies...', color: 'text-terminal-green', gap: 350 },
+        { text: '  [OK] git · zsh · neovim · ripgrep · fd · yay', color: 'text-terminal-green/70', gap: 350 },
+        { text: '> bootstrapping ~/claude-os/ tree', color: 'text-terminal-green', gap: 350 },
+        { text: '  [OK] docs · journal · skills · artifacts · system-state', color: 'text-terminal-green/70', gap: 350 },
+        { text: '  [OK] mcp · observations · bases · Archive', color: 'text-terminal-green/70', gap: 250 },
+        { text: '> initializing git history', color: 'text-terminal-green', gap: 350 },
+        { text: '  [OK] commit 0001 — "the substrate exists"', color: 'text-terminal-green/70', gap: 350 },
+        { text: '', color: '', gap: 200 },
+        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', gap: 200 },
+        { text: '  HANDOFF READY', color: 'text-alert-amber', gap: 250 },
+        { text: '  Claude takes over from here.', color: 'text-text-secondary/60', gap: 250 },
+        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', gap: 200 },
+      ];
+
+      const output = document.getElementById('claude-os-terminal');
+      const cursor = document.getElementById('claude-os-cursor');
+
+      function typeLine(el: HTMLElement, text: string, charDelay: number): Promise<void> {
+        return new Promise((resolve) => {
+          let i = 0;
+          function step() {
+            if (i < text.length) {
+              el.textContent += text[i];
+              i++;
+              setTimeout(step, charDelay);
+            } else {
+              resolve();
+            }
+          }
+          step();
+        });
+      }
+
+      async function runSequence() {
+        if (!output) return;
+        for (const line of lines) {
+          if (line.gap > 0) await new Promise((r) => setTimeout(r, line.gap));
+          const el = document.createElement('div');
+          el.className = line.color;
+          if (line.text === '') {
+            el.textContent = '\u00a0';
+            output.appendChild(el);
+          } else {
+            output.appendChild(el);
+            await typeLine(el, line.text, 14);
+          }
+        }
+        if (cursor) cursor.style.display = 'none';
+      }
+
+      // Start the boot sequence when the terminal scrolls into view
+      const terminalSection = output?.closest('section,div')?.parentElement;
+      if (terminalSection && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                setTimeout(runSequence, 300);
+                io.disconnect();
+                break;
+              }
+            }
+          },
+          { threshold: 0.25 }
+        );
+        io.observe(terminalSection);
+      } else {
+        setTimeout(runSequence, 600);
+      }
+
+      // Filesystem explorer
+      const nodes = document.querySelectorAll('.fs-node');
+      const details = document.querySelectorAll('.fs-detail');
+      const empty = document.getElementById('fs-empty');
+
+      function select(id: string) {
+        nodes.forEach((n) => {
+          if (n.getAttribute('data-fs-node') === id) n.setAttribute('data-active', 'true');
+          else n.removeAttribute('data-active');
+        });
+        details.forEach((d) => {
+          if (d.getAttribute('data-fs-detail') === id) {
+            d.classList.add('fs-active');
+            d.classList.remove('hidden');
+          } else {
+            d.classList.remove('fs-active');
+            d.classList.add('hidden');
+          }
+        });
+        if (empty) empty.style.display = 'none';
+      }
+
+      nodes.forEach((n) => {
+        n.addEventListener('click', () => {
+          const id = n.getAttribute('data-fs-node');
+          if (id) select(id);
+        });
+      });
+
+      // Auto-select docs/ when the tree first scrolls into view
+      const tree = document.getElementById('fs-tree');
+      if (tree && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                setTimeout(() => select('docs'), 800);
+                io.disconnect();
+                break;
+              }
+            }
+          },
+          { threshold: 0.3 }
+        );
+        io.observe(tree);
+      } else {
+        select('docs');
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initClaudeOs, { once: true });
+    } else {
+      initClaudeOs();
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .fs-node {
+    animation: fs-reveal 0.4s ease-out both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  @keyframes fs-reveal {
+    from {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .fs-node[data-active='true'] {
+    background: rgba(0, 255, 65, 0.08);
+    border-left-color: #00ff41;
+  }
+  .fs-node[data-active='true'] .fs-node-label {
+    color: #00ff41 !important;
+  }
+  .fs-detail.fs-active {
+    display: block;
+    animation: fs-fade 0.35s ease-out;
+  }
+  @keyframes fs-fade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

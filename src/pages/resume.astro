@@ -1,24 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const education = [
+  {
+    degree: 'B.S. Information Technology',
+    concentration: 'AI Concentration',
+    school: 'Strayer University',
+    period: 'In Progress',
+  },
+  {
+    degree: 'General Studies Coursework',
+    school: 'University of Kentucky',
+    period: '2008 — 2010',
+  },
+];
+
 const experience = [
   {
-    title: 'Founder & Lead Researcher',
-    org: 'Mindlink Research Group LLC',
-    period: '2024 — Present',
-    description: 'Leading independent research into AGI alignment, swarm intelligence frameworks, and human-AI coexistence models. Developing open-source tools and publishing research on emergent behavior in multi-agent systems.',
+    title: 'Founder & Independent Researcher',
+    org: 'Mindlink Research Group',
+    period: '2025 — Present',
+    description: 'Run multi-agent empirical experiments on emergent behavior and design governance frameworks that treat alignment as a group-level property. Built AGI-SAC (testing whether persistent memory alone drives behavioral divergence between identical-base-model LLM agents) and authored the Concord of Coexistence alignment framework.',
   },
   {
-    title: 'Independent AI Developer',
-    org: 'Self-employed',
-    period: '2023 — Present',
-    description: 'Building AI-powered tools and frameworks. Developing Bench CLI for LLM evaluation, AGI-SAC swarm simulation, and the Concord of Coexistence framework.',
-  },
-  {
-    title: 'IT Specialist / Technical Support',
+    title: 'Advanced Repair Agent',
     org: 'Best Buy / Geek Squad',
-    period: '2019 — 2023',
-    description: 'Provided technical support and IT services. Diagnosed and resolved hardware/software issues. Built expertise in systems administration, networking, and customer-facing technical communication.',
+    period: 'Apr 2021 — Present',
+    description: 'Senior technical resource on the bench — mentor associates and own the most complex escalations. Diagnose and repair hardware/software faults across Windows and macOS, including data recovery, NVMe/SSD cloning and migration, BIOS/UEFI issues, and malware remediation.',
   },
 ];
 
@@ -29,10 +37,9 @@ const certifications = [
 ];
 
 const skills = {
-  'Languages & Frameworks': ['Python', 'TypeScript', 'JavaScript', 'Astro', 'Node.js', 'Bash'],
-  'AI & ML': ['LLM Evaluation', 'Multi-Agent Systems', 'Swarm Intelligence', 'Alignment Research', 'Prompt Engineering'],
-  'Infrastructure': ['Linux', 'Git', 'Docker', 'Cloudflare', 'GitHub Actions', 'Networking'],
-  'Research': ['Technical Writing', 'Framework Design', 'Simulation Development', 'Ethics & Policy'],
+  'AI / ML & Research': ['Multi-Agent Systems', 'LLM Evaluation & Behavioral Analysis', 'AI Alignment & Safety', 'Governance-Framework Design', 'Statistical Analysis'],
+  'Tools & Platforms': ['Anthropic Claude / Claude Code', 'Google Vertex AI', 'Google Cloud Platform', 'Microsoft 365 / Copilot Studio', 'Obsidian', 'Git'],
+  'Systems & Hardware': ['Windows & macOS Diagnostics', 'Linux (Kubuntu)', 'Data Recovery', 'NVMe/SSD Cloning & Migration', 'BIOS/UEFI', 'Endpoint Security & Malware Remediation'],
 };
 ---
 
@@ -42,26 +49,37 @@ const skills = {
     <div class="mb-12 fade-in">
       <span class="section-number">01_RESUME // CURRICULUM VITAE</span>
       <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Tristan Jessup</h1>
-      <p class="text-lg text-text-secondary/80 mb-6">AI Researcher · Independent Developer · Founder, Mindlink Research Group LLC</p>
-      <span
-        class="inline-flex items-center gap-2 font-mono text-sm border border-border-color text-text-secondary/50 px-4 py-2 rounded cursor-not-allowed"
-        title="PDF coming soon"
+      <p class="text-lg text-text-secondary/80 mb-6">Independent AI Alignment Researcher · Founder, Mindlink Research Group · Advanced Repair Agent, Geek Squad</p>
+      <a
+        href="/Tristan_Jessup_Resume.pdf"
+        target="_blank"
+        rel="noopener"
+        download
+        class="inline-flex items-center gap-2 font-mono text-sm border border-border-color text-text-secondary px-4 py-2 rounded hover:border-terminal-green hover:text-terminal-green transition-colors"
+        title="Download resume (PDF)"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        PDF Coming Soon
-      </span>
+        Download PDF
+      </a>
     </div>
 
     <!-- Education -->
     <section class="mb-12 fade-in">
       <span class="section-number">02_EDUCATION</span>
       <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Education</h2>
-      <div class="border border-border-color rounded-lg p-6">
-        <h3 class="font-mono text-base font-semibold text-text-secondary">B.S. Information Technology</h3>
-        <p class="text-sm text-terminal-green mt-1">AI Concentration</p>
-        <p class="text-sm text-text-secondary/70 mt-1">Strayer University</p>
+      <div class="space-y-4">
+        {education.map((edu) => (
+          <div class="border border-border-color rounded-lg p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <h3 class="font-mono text-base font-semibold text-text-secondary">{edu.degree}</h3>
+              <span class="font-mono text-xs text-alert-amber">{edu.period}</span>
+            </div>
+            {edu.concentration && <p class="text-sm text-terminal-green mt-1">{edu.concentration}</p>}
+            <p class="text-sm text-text-secondary/70 mt-1">{edu.school}</p>
+          </div>
+        ))}
       </div>
     </section>
 

@@ -3,6 +3,7 @@ title: "The Concord of Coexistence: A Framework for Human-AI Mutual Flourishing"
 date: "2026-03-15"
 description: "A philosophical and technical framework proposing principles for cooperative intelligence between human and artificial agents."
 authors: ["Tristan Jessup"]
+tags: ["alignment", "governance", "human-ai-cooperation", "framework"]
 ---
 
 ## Abstract
@@ -66,4 +67,4 @@ The future of AI is not a control problem. It is a cooperation problem. The Conc
 
 ---
 
-*This paper is a living document. Comments, critiques, and contributions are welcome via [GitHub](https://github.com/topstolenname) or [email](mailto:tristan@laughing-man.net).*
+*This paper is a living document. Comments, critiques, and contributions are welcome via [GitHub](https://github.com/topstolenname) or [email](mailto:tristan@mindlink.dev).*

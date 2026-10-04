@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = 'AI Researcher, Independent Developer, Founder of Mindlink Research Group LLC' } = Astro.props;
+const { title, description = 'AI Researcher, Independent Developer, Founder of Mindlink Research Group' } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
@@ -24,7 +24,7 @@ const navLinks = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} | laughing-man.net</title>
+    <title>{title} | mindlink.dev</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -58,7 +58,7 @@ const navLinks = [
               <path d="M 35 60 Q 50 72 65 60" stroke-width="2.5" stroke-linecap="round" />
               <text x="50" y="88" text-anchor="middle" fill="currentColor" font-size="6" font-family="Fira Code, monospace" letter-spacing="1">LM</text>
             </svg>
-            <span class="font-mono text-sm font-semibold hidden sm:inline">laughing-man.net</span>
+            <span class="font-mono text-sm font-semibold hidden sm:inline">mindlink.dev</span>
           </button>
 
           <!-- Desktop Nav -->
@@ -122,7 +122,7 @@ const navLinks = [
             <h3 class="font-mono text-terminal-green text-sm font-semibold mb-3">01_LINKS</h3>
             <div class="flex flex-col gap-2">
               <a href="https://github.com/topstolenname" class="text-text-secondary hover:text-terminal-green text-sm transition-colors" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://linkedin.com/in/tristanjessup" class="text-text-secondary hover:text-terminal-green text-sm transition-colors" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://www.linkedin.com/in/john-jessup25/" class="text-text-secondary hover:text-terminal-green text-sm transition-colors" target="_blank" rel="noopener">LinkedIn</a>
             </div>
           </div>
           <div>
@@ -131,7 +131,7 @@ const navLinks = [
           </div>
           <div>
             <h3 class="font-mono text-terminal-green text-sm font-semibold mb-3">03_ORG</h3>
-            <p class="text-text-secondary text-sm">Mindlink Research Group LLC</p>
+            <p class="text-text-secondary text-sm">Mindlink Research Group</p>
           </div>
         </div>
         <div class="border-t border-border-color mt-8 pt-6 text-center">
@@ -227,7 +227,7 @@ const navLinks = [
     </style>
 
     <!-- Scripts -->
-    <script lang="ts">
+    <script>
       function initSiteScripts() {
         // Mobile menu toggle
         const menuBtn = document.getElementById('mobile-menu-btn');

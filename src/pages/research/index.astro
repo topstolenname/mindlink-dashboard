@@ -25,7 +25,7 @@ const papers = (await getCollection('research')).sort(
       <div class="space-y-4 fade-in">
         {papers.map((paper) => (
           <a href={`/research/${paper.id}`} class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 group">
-            <div class="flex items-center gap-3 mb-2">
+            <div class="flex items-center gap-3 mb-2 flex-wrap">
               <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Paper</span>
               <span class="font-mono text-xs text-border-color">{paper.data.date}</span>
             </div>
@@ -37,6 +37,15 @@ const papers = (await getCollection('research')).sort(
               <p class="font-mono text-xs text-text-secondary/50 mt-3">
                 {paper.data.authors.join(', ')}
               </p>
+            )}
+            {paper.data.tags.length > 0 && (
+              <div class="flex items-center gap-2 mt-3 flex-wrap">
+                {paper.data.tags.map((tag) => (
+                  <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
             )}
           </a>
         ))}

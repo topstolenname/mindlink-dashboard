@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const convictions = [
+  {
+    title: 'The skill library is the product',
+    body: 'Markdown skill files are the asset; the model is replaceable infrastructure.',
+  },
+  {
+    title: 'Small model + right context wins',
+    body: 'A small model with the right context beats a frontier model with none. Tiered routing (Haiku → Sonnet → Opus) keeps cost-per-case in the cents.',
+  },
+  {
+    title: 'PowerShell is the action layer',
+    body: 'Structured JSON in/out under a published contract. The model never reads raw logs.',
+  },
+];
+
+const numbers = [
+  { value: '$0.04', label: 'AI cost per real bench case' },
+  { value: '$0.05', label: 'AI cost per consumer support session' },
+  { value: '87.9%', label: 'Gross margin per Anvil Assist sub ($9.99/mo)' },
+  { value: '$110/mo', label: 'Pilot AI cost (5 stores, ~2,600 sessions/mo)' },
+];
+
+const stack = ['Python', 'Anthropic Claude', 'Tiered Routing', 'PowerShell', 'BM25 Retrieval', 'JSONL Audit', 'Rich REPL'];
+---
+
+<BaseLayout title="Anvil" description="AI-empowered repair-tech platform — a bench technician's diagnostic catalog as a phone-resident agent.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="mb-8 fade-in">
+      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
+      <span class="section-number block mt-2">01_PROJECT // ANVIL</span>
+      <div class="flex items-center gap-3 mt-3 mb-4">
+        <h1 class="font-mono text-3xl font-bold text-text-secondary">Anvil</h1>
+        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Active</span>
+      </div>
+      <p class="text-lg text-text-secondary/80">AI-Empowered Repair-Tech Platform · Mindlink Research Group</p>
+    </div>
+
+    <div class="space-y-8 fade-in">
+      <section>
+        <span class="section-number">02_OVERVIEW</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">What is Anvil?</h2>
+        <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+          <p>
+            Anvil turns the diagnostic catalog of a bench repair technician — a Best Buy Advanced Repair Agent, or
+            any in-shop tech — into a small AI agent that runs on the technician's phone. The agent retrieves the
+            right diagnostic skill, calls structured tools, and walks the tech through remediation, all while
+            tracking cost per case in real time.
+          </p>
+          <p>
+            It is built on a deliberately model-agnostic architecture: the value lives in a curated library of
+            Markdown skill files and a published PowerShell tool contract, so the underlying model can be swapped or
+            downgraded without losing capability.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">03_DESIGN_CONVICTIONS</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Three Convictions</h2>
+        <div class="grid grid-cols-1 gap-4">
+          {convictions.map((c, i) => (
+            <div class="border border-border-color rounded-lg p-6 hover:border-terminal-green/30 transition-colors">
+              <div class="flex items-baseline gap-3 mb-2">
+                <span class="font-mono text-xs text-terminal-green">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="font-mono text-base font-semibold text-text-secondary">{c.title}</h3>
+              </div>
+              <p class="text-sm text-text-secondary/70 leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">04_UNIT_ECONOMICS</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Validated Numbers</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {numbers.map((n) => (
+            <div class="border border-border-color rounded-lg p-5">
+              <div class="font-mono text-2xl font-bold text-terminal-green">{n.value}</div>
+              <div class="text-xs text-text-secondary/70 mt-1">{n.label}</div>
+            </div>
+          ))}
+        </div>
+        <p class="text-xs text-text-secondary/50 mt-3">
+          Figures from a token cost model with an independent math check; tiered routing keeps per-case AI spend in
+          the cents.
+        </p>
+      </section>
+
+      <section>
+        <span class="section-number">05_STATUS</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Current State</h2>
+        <div class="space-y-4 text-text-secondary/80 leading-relaxed">
+          <p>
+            A runnable Python CLI alpha ships today: 10 skills across diagnostics, remediation, and client-comms;
+            five PowerShell tools wired end-to-end; mock fixtures for three demo scenarios (BitLocker recovery,
+            slow-boot SMART regression, BSOD post-update); and 31 passing tests that require no API key. The next
+            milestone is a field-test proof of concept measuring real cost-per-case across live bench tickets.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <span class="section-number">06_STACK</span>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Tech Stack</h2>
+        <div class="flex flex-wrap gap-2">
+          {stack.map((tech) => (
+            <span class="font-mono text-xs text-text-secondary/80 bg-terminal-green/5 border border-border-color px-3 py-1 rounded">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
