@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseHeader from '../../components/CaseHeader.astro';
+
+const layers = [
+  {
+    title: 'Skill library',
+    body: 'Diagnostic know-how lives in plain Markdown skill files: what to check, in what order, and what the result means. The skills are the asset; the model is replaceable infrastructure.',
+  },
+  {
+    title: 'Tiered model routing',
+    body: 'Start every step on the smallest language model that can handle it, and escalate to a larger model only when a step needs more reasoning. The goal is predictable cost and latency without giving up hard cases.',
+  },
+  {
+    title: 'PowerShell action layer',
+    body: 'The agent acts through PowerShell tools with structured JSON in and out under a published contract. The model never reads raw logs; it reads the tool’s summary.',
+  },
+  {
+    title: 'Audit trail',
+    body: 'Agent actions are written to a JSONL audit log, so a technician or reviewer can see what the agent did.',
+  },
+];
+
+const scenarios = ['BitLocker recovery', 'Slow boot with a SMART regression', 'Blue screen after an update'];
+
+const notShown = [
+  'Field use on live repair tickets.',
+  'Measured cost, speed, or accuracy. There are no validated numbers yet, so this page quotes none.',
+  'A public repository or demo.',
+];
+---
+
+<BaseLayout title="Anvil: tiered agentic diagnostics" description="Anvil is a paused prototype of a bench-repair assistant: diagnostic skill files, small language models first, and PowerShell tools behind a structured JSON contract.">
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <CaseHeader
+      title="Anvil"
+      subtitle="An agentic diagnostics assistant for repair benches: small language models driving PowerShell tools, organised in tiers."
+      status="Paused prototype"
+      statusTone="amber"
+      statusLine="Status as of October 4, 2026: paused prototype. Architecture and an early Python CLI exist; no field testing, no public repo."
+    />
+
+    <div class="space-y-12 fade-in">
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">The problem</h2>
+        <div class="space-y-4 text-text-secondary/85 leading-relaxed">
+          <p>
+            On a repair bench, the difference between a fast fix and a lost afternoon is usually what the most
+            experienced tech knows to check first. That knowledge lives in people's heads, so it doesn't scale and
+            it walks out the door.
+          </p>
+          <p>
+            Anvil is my attempt to package that know-how so a small AI agent can retrieve the right procedure, run
+            the right checks through scripted tools, and walk a technician through the fix, while staying cheap,
+            inspectable, and under the technician's control.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Architecture</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {layers.map((l, i) => (
+            <div class="border border-border-color rounded-lg p-5">
+              <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">{i + 1}. {l.title}</h3>
+              <p class="text-sm text-text-secondary/75 leading-relaxed">{l.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Design scenarios</h2>
+        <p class="text-text-secondary/85 leading-relaxed mb-4">The early prototype was shaped around common Windows bench cases:</p>
+        <ul class="flex flex-wrap gap-2">
+          {scenarios.map((s) => <li class="font-mono text-xs text-text-secondary/85 bg-terminal-green/5 border border-border-color px-3 py-1.5 rounded">{s}</li>)}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Why it matters</h2>
+        <p class="text-text-secondary/85 leading-relaxed">
+          Most enterprise agent projects face the same trade-offs: cost per task, whether you can swap models,
+          what the agent is allowed to touch, and whether anyone can audit what it did. Anvil's answers are small
+          models first, knowledge kept outside the model, tools with a narrow contract, and a log of every action.
+        </p>
+      </section>
+
+      <section class="border border-alert-amber/40 rounded-lg p-6 bg-alert-amber/5">
+        <h2 class="font-mono text-base font-semibold text-alert-amber mb-3">What this does not show</h2>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-text-secondary/80">
+          {notShown.map((n) => <li>{n}</li>)}
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Stack</h2>
+        <ul class="flex flex-wrap gap-2">
+          {['Python', 'PowerShell', 'Small language models', 'Tiered routing', 'BM25 retrieval', 'JSONL audit log'].map((t) => (
+            <li class="font-mono text-xs text-text-secondary/85 bg-terminal-green/5 border border-border-color px-3 py-1 rounded">{t}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseHeader from '../../components/CaseHeader.astro';
+
+const repo = 'https://github.com/topstolenname/emergent-divergence';
 
 // Divergence hypotheses (H1–H5) and influence hypotheses (H-I1–H-I3)
 const hypotheses = [
@@ -19,43 +22,33 @@ const hypotheses = [
   title="Emergent Divergence"
   description="An empirical experiment: do identical instances of the same base LLM develop measurable behavioral divergence when they coordinate over many rounds?"
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="mb-8 fade-in">
-      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
-      <span class="section-number block mt-2">01_PROJECT // EMERGENT-DIVERGENCE</span>
-      <div class="flex items-center gap-3 mt-3 mb-4">
-        <h1 class="font-mono text-3xl font-bold text-text-secondary">Emergent Behavioral Divergence</h1>
-        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Active</span>
-        <span class="font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded">Pilot</span>
-      </div>
-      <p class="text-lg text-text-secondary/80 max-w-3xl">
-        Clone the same mind three times, give each a job, and let them argue for fifty rounds. Do they stay the same
-        — or do measurably different behaviors emerge? This is a controlled, reproducible experiment built to answer
-        that without hand-waving about consciousness.
-      </p>
-    </div>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <CaseHeader
+      title="Emergent Divergence"
+      subtitle="Clone the same model three times, give each a job, and let them deliberate for fifty rounds. Do measurably different behaviours emerge, and does memory drive it? A controlled, reproducible experiment built to answer that without hand-waving."
+      status="Pilot"
+      statusLine="Status as of October 4, 2026: two single-cell pilot runs (alpha01, alpha02) are in the repo; the write-up below covers alpha02. The rest of the 24-cell matrix has not been published yet."
+    />
 
     <div class="space-y-10 fade-in">
       <section>
-        <span class="section-number">02_OVERVIEW</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">The Question</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">The Question</h2>
         <div class="space-y-4 text-text-secondary/80 leading-relaxed">
           <p>
             Do multiple instances of the <em class="text-terminal-green">same</em> base LLM, coordinating over many
             rounds, develop measurable behavioral divergence — and does cross-agent influence drive it?
           </p>
           <p>
-            The future of AI isn't one model — it's <em class="text-terminal-green">swarms</em> of them, agents
-            coordinating and building on each other's outputs. If identical agents drift apart just by interacting,
-            that reshapes how we reason about multi-agent reliability, consistency, and trust. This experiment tests
-            that claim narrowly and falsifiably — no breathless emergence narrative, just data.
+            More and more systems chain several model instances together, each building on the others' outputs.
+            If identical agents drift apart just by interacting, that changes how you test, monitor, and trust a
+            multi-agent deployment. This experiment tests that claim narrowly and falsifiably: no breathless
+            emergence narrative, just data.
           </p>
         </div>
       </section>
 
       <section>
-        <span class="section-number">03_DESIGN // SETUP</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Experimental Design</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Experimental Design</h2>
         <div class="space-y-4 text-text-secondary/80 leading-relaxed">
           <p>
             Three instances of one base model take fixed roles — a
@@ -92,8 +85,7 @@ const hypotheses = [
       </section>
 
       <section>
-        <span class="section-number">04_HYPOTHESES</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Eight Falsifiable Hypotheses</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Eight Falsifiable Hypotheses</h2>
         <div class="border border-border-color rounded-lg overflow-hidden">
           <table class="w-full text-sm">
             <thead>
@@ -119,8 +111,7 @@ const hypotheses = [
       </section>
 
       <section>
-        <span class="section-number">05_RIGOR // METHODOLOGY</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Built to Withstand Scrutiny</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Built to Withstand Scrutiny</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="border border-border-color rounded-lg p-5">
             <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">Null Baseline</h3>
@@ -142,11 +133,10 @@ const hypotheses = [
       </section>
 
       <section>
-        <span class="section-number">06_STATUS // PILOT FINDINGS</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">First Cell Off the Bench</h2>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Pilot findings (alpha02)</h2>
         <div class="space-y-4 text-text-secondary/80 leading-relaxed">
           <p>
-            The first pilot cell (<span class="font-mono text-text-secondary">alpha02</span>, a single local-model
+            The local-model pilot cell (<span class="font-mono text-text-secondary">alpha02</span>, a single
             run, <span class="font-mono">n = 1</span>) is in. Read honestly, it's a pilot with effect sizes — not a
             verdict. The most interesting signal is a <strong class="text-terminal-green">dissociation</strong>:
           </p>
@@ -161,14 +151,16 @@ const hypotheses = [
           <p>
             Influence came out <strong class="text-alert-amber">near-egalitarian</strong> (Gini ≈ 0) — no hub agent
             dominated. The framework correctly scored a true negative: it didn't invent a leader where there was
-            none. A pre-run rigor pass and a memory-read instrumentation fix (PR #8) closed an audit gap so memory's
+            none. A pre-run rigor pass and a memory-read instrumentation fix
+            (<a href="https://github.com/topstolenname/emergent-divergence/pull/8" target="_blank" rel="noopener" class="text-terminal-green hover:text-alert-amber transition-colors">PR #8</a>)
+            closed an audit gap so memory's
             causal effect can be measured in the runs ahead.
           </p>
         </div>
         <div class="border border-alert-amber/40 rounded-lg p-4 mt-5 bg-alert-amber/5">
           <p class="text-sm text-text-secondary/80 leading-relaxed">
             <span class="font-mono text-alert-amber">Scope:</span> This does <strong>not</strong> test
-            consciousness, selfhood, or AGI. It tests narrow, falsifiable claims about behavioral divergence and
+            consciousness, selfhood, or general intelligence. It tests narrow, falsifiable claims about behavioral divergence and
             influence. Negative results are findings, not failures — and they'll be published alongside the
             positives.
           </p>
@@ -176,15 +168,18 @@ const hypotheses = [
       </section>
 
       <section>
-        <span class="section-number">07_CONNECTION // AGI-SAC</span>
-        <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-4">Relationship to AGI-SAC</h2>
-        <p class="text-text-secondary/80 leading-relaxed">
-          Emergent Divergence provides the empirical grounding for the chaos/entropy parameter (Ω) in the
-          <a href="/projects/agi-sac" class="text-terminal-green hover:text-alert-amber transition-colors">AGI-SAC simulation</a>.
-          Measuring how and why identical agents actually diverge informs how we build alignment mechanisms that
-          are resilient rather than brittle.
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Why it matters outside research</h2>
+        <p class="text-text-secondary/85 leading-relaxed">
+          If agents that share a base model drift apart once they have memory and roles, a multi-agent system
+          cannot be tested once and trusted forever. It needs ongoing evaluation and drift monitoring. This
+          experiment is designed to measure that drift honestly, including when the answer is "not significant".
         </p>
       </section>
+
+      <div class="flex flex-wrap gap-3">
+        <a href={repo} target="_blank" rel="noopener" class="font-mono text-sm border border-terminal-green text-terminal-green px-5 py-2.5 rounded hover:bg-terminal-green/10 transition-colors">View the repository →</a>
+        <a href={`${repo}/tree/main/data/reports/alpha02`} target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">alpha02 report</a>
+      </div>
     </div>
-  </div>
+  </article>
 </BaseLayout>
