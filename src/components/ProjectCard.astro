@@ -2,7 +2,7 @@
 interface Props {
   title: string;
   description: string;
-  status: 'active' | 'archived' | 'in-progress';
+  status: 'active' | 'archived' | 'in-progress' | 'pre-flight';
   href: string;
   tags?: string[];
 }
@@ -12,6 +12,7 @@ const { title, description, status, href, tags = [] } = Astro.props;
 const statusColors = {
   active: 'text-terminal-green border-terminal-green',
   'in-progress': 'text-alert-amber border-alert-amber',
+  'pre-flight': 'text-alert-amber border-alert-amber',
   archived: 'text-border-color border-border-color',
 };
 ---

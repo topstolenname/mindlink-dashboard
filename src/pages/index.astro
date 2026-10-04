@@ -44,6 +44,13 @@ import ProjectCard from '../components/ProjectCard.astro';
     <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-8">Featured Work</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <ProjectCard
+        title="Claude OS"
+        description="Treats Claude as the primary interaction layer for a dedicated Arch Linux system. The filesystem becomes the memory — sessions compound across time without weight updates."
+        status="pre-flight"
+        href="/projects/claude-os"
+        tags={['agent', 'arch-linux', 'memory']}
+      />
+      <ProjectCard
         title="AGI-SAC"
         description="Swarm-based AGI alignment framework using self-assembling coherence. Explore agent dynamics through an interactive simulation."
         status="active"
@@ -112,17 +119,19 @@ import ProjectCard from '../components/ProjectCard.astro';
   <script>
     function initTerminal() {
     const lines = [
-      { text: '> Initializing AGI-SAC Core...', color: 'text-terminal-green', delay: 0 },
-      { text: '  [OK] swarm_coherence module loaded', color: 'text-terminal-green/70', delay: 600 },
-      { text: '> Loading Concord_of_Coexistence.json...', color: 'text-terminal-green', delay: 1200 },
-      { text: '  [OK] framework integrity verified', color: 'text-terminal-green/70', delay: 1800 },
-      { text: '> Bootstrapping emergent-divergence module...', color: 'text-terminal-green', delay: 2400 },
-      { text: '  [OK] behavioral patterns indexed', color: 'text-terminal-green/70', delay: 3000 },
-      { text: '', color: '', delay: 3400 },
-      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 3600 },
-      { text: '  SYSTEM READY', color: 'text-alert-amber', delay: 4000 },
-      { text: '  Mindlink Research Group // mindlink.dev', color: 'text-text-secondary/60', delay: 4400 },
-      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 4600 },
+      { text: '> Mounting ~/claude-os/ ...', color: 'text-terminal-green', delay: 0 },
+      { text: '  [OK] filesystem-resident memory online', color: 'text-terminal-green/70', delay: 500 },
+      { text: '> Initializing AGI-SAC Core...', color: 'text-terminal-green', delay: 1100 },
+      { text: '  [OK] swarm_coherence module loaded', color: 'text-terminal-green/70', delay: 1700 },
+      { text: '> Loading Concord_of_Coexistence.json...', color: 'text-terminal-green', delay: 2300 },
+      { text: '  [OK] framework integrity verified', color: 'text-terminal-green/70', delay: 2900 },
+      { text: '> Bootstrapping emergent-divergence module...', color: 'text-terminal-green', delay: 3500 },
+      { text: '  [OK] behavioral patterns indexed', color: 'text-terminal-green/70', delay: 4100 },
+      { text: '', color: '', delay: 4500 },
+      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 4700 },
+      { text: '  SYSTEM READY', color: 'text-alert-amber', delay: 5100 },
+      { text: '  Mindlink Research Group // mindlink.dev', color: 'text-text-secondary/60', delay: 5500 },
+      { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'text-border-color', delay: 5700 },
     ];
 
     const output = document.getElementById('terminal-output');

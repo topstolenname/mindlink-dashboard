@@ -4,6 +4,20 @@ import ProjectCard from '../../components/ProjectCard.astro';
 
 const projects = [
   {
+    title: 'Anvil',
+    description: 'AI-empowered repair-tech platform that turns a bench technician’s diagnostic catalog into a phone-resident agent. Markdown skill library as the product, tiered model routing (Haiku → Sonnet → Opus) keeping cost-per-case in the cents, and a PowerShell action layer under a published JSON contract.',
+    status: 'active' as const,
+    href: '/projects/anvil',
+    tags: ['AI agent', 'diagnostics', 'PowerShell', 'Python'],
+  },
+  {
+    title: 'Claude OS',
+    description: 'A personal research project that treats Claude as the primary interaction layer for a dedicated Arch Linux system. Filesystem-resident memory letting sessions compound across time without weight updates.',
+    status: 'pre-flight' as const,
+    href: '/projects/claude-os',
+    tags: ['agent', 'arch-linux', 'memory', 'research'],
+  },
+  {
     title: 'AGI-SAC',
     description: 'Swarm-based AGI alignment framework using self-assembling coherence. Interactive simulation with parameter controls for exploring agent dynamics.',
     status: 'active' as const,
@@ -12,10 +26,10 @@ const projects = [
   },
   {
     title: 'Emergent Divergence',
-    description: 'Research into emergent behavioral patterns in multi-agent systems and their implications for AI safety and alignment.',
+    description: 'An empirical experiment: do identical instances of the same base LLM develop measurable behavioral divergence when they coordinate over 50 rounds? Reproducible, falsifiable, built for rigor.',
     status: 'active' as const,
     href: '/projects/emergent-divergence',
-    tags: ['emergence', 'multi-agent', 'safety', 'research'],
+    tags: ['emergence', 'multi-agent', 'reproducible', 'research'],
   },
   {
     title: 'Bench CLI',
@@ -54,6 +68,9 @@ const projects = [
       </button>
       <button data-filter="in-progress" class="filter-btn font-mono text-xs px-3 py-1.5 rounded border border-border-color text-text-secondary hover:border-alert-amber hover:text-alert-amber transition-colors">
         In Progress
+      </button>
+      <button data-filter="pre-flight" class="filter-btn font-mono text-xs px-3 py-1.5 rounded border border-border-color text-text-secondary hover:border-alert-amber hover:text-alert-amber transition-colors">
+        Pre-flight
       </button>
     </div>
 
