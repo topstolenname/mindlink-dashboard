@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Lab & archive" description="Older experiments, concepts, and archived projects by Tristan Jessup.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <header class="mb-10 fade-in">
+      <p class="eyebrow">Lab &amp; archive</p>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2 mb-4">Experiments, concepts, and older work</h1>
+      <p class="text-lg text-text-secondary/80">
+        Things I explored that aren't case studies. They're kept here so the record stays honest. For current
+        work, see <a href="/work" class="text-terminal-green hover:text-alert-amber transition-colors">Work</a>.
+      </p>
+    </header>
+
+    <div class="space-y-4 fade-in">
+      <a href="/lab/agi-sac" class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-colors group">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <h2 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors">AGI-SAC</h2>
+          <span class="font-mono text-[10px] uppercase px-2 py-0.5 border rounded text-text-secondary/60 border-border-color">Research framework</span>
+        </div>
+        <p class="text-sm text-text-secondary/75 leading-relaxed">
+          Aligned Group Integration — System Architecture Coexistence: a Python research instrument for observing
+          system-level failure modes in stateful multi-agent systems. Includes a small browser visualisation.
+        </p>
+      </a>
+
+      <div id="bench-cli" class="border border-border-color rounded-lg p-6">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <h2 class="font-mono text-base font-semibold text-text-secondary">Bench CLI</h2>
+          <span class="font-mono text-[10px] uppercase px-2 py-0.5 border rounded text-text-secondary/60 border-border-color">Concept</span>
+        </div>
+        <p class="text-sm text-text-secondary/75 leading-relaxed">
+          An idea for a command-line tool to compare language models on structured, real-world tasks instead of
+          leaderboard scores. Not built; no code yet.
+        </p>
+      </div>
+
+      <div id="claude-os" class="border border-border-color rounded-lg p-6">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <h2 class="font-mono text-base font-semibold text-text-secondary">Claude OS</h2>
+          <span class="font-mono text-[10px] uppercase px-2 py-0.5 border rounded text-text-secondary/50 border-border-color">Abandoned</span>
+        </div>
+        <p class="text-sm text-text-secondary/75 leading-relaxed">
+          A short-lived 2026 personal experiment in using Claude as the main interface to an Arch Linux machine. Abandoned.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

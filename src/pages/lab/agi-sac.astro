@@ -2,17 +2,30 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="AGI-SAC" description="Self-Assembling Coherence — Interactive swarm simulation for AGI alignment research">
+<BaseLayout title="AGI-SAC (Lab)" description="AGI-SAC: a Python research instrument for observing system-level failure modes in stateful multi-agent systems, plus a small browser visualisation.">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <!-- Header -->
-    <div class="mb-8 fade-in">
-      <a href="/projects" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Projects</a>
-      <span class="section-number block mt-2">01_PROJECT // AGI-SAC</span>
-      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">Self-Assembling Coherence</h1>
-      <p class="text-lg text-text-secondary/80 max-w-3xl">
-        A swarm-based framework for studying AGI alignment through emergent coherence. Agents self-organize
-        around shared attractors while entropy forces test system stability. The simulation below lets you
-        explore how alignment force, chaos, and density interact in real time.
+    <header class="mb-8 fade-in max-w-3xl">
+      <a href="/lab" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors">← Lab &amp; archive</a>
+      <p class="eyebrow mt-6">Lab</p>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2 mb-2">AGI-SAC</h1>
+      <p class="font-mono text-sm text-terminal-green/80 mb-4">Aligned Group Integration — System Architecture Coexistence</p>
+      <p class="text-lg text-text-secondary/80">
+        A Python research instrument for observing alignment failure modes that only appear at the system level in
+        stateful, multi-agent deployments with shared memory, tool access, and long interaction histories. It is
+        research infrastructure for controlled experiments, not a production system, and it makes no claims about
+        consciousness.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-6">
+        <a href="https://github.com/topstolenname/agisa_sac" target="_blank" rel="noopener" class="font-mono text-sm border border-terminal-green text-terminal-green px-4 py-2 rounded hover:bg-terminal-green/10 transition-colors">Repository →</a>
+        <a href="https://topstolenname.github.io/agisa_sac/" target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-4 py-2 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Documentation</a>
+      </div>
+    </header>
+
+    <div class="border border-alert-amber/40 rounded-lg p-4 mb-6 bg-alert-amber/5 max-w-3xl fade-in">
+      <p class="text-sm text-text-secondary/80 leading-relaxed">
+        <span class="font-mono text-alert-amber">Visual toy, not the research model.</span> The animation below is a
+        simple flocking sketch I made to build intuition about cohesion versus noise. It is not AGI-SAC's
+        experimental code, and its readouts are illustrative, not measurements.
       </p>
     </div>
 
@@ -20,8 +33,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <div class="border border-border-color rounded-lg overflow-hidden mb-8 fade-in">
       <!-- Sim Header -->
       <div class="flex items-center justify-between px-4 py-2 border-b border-border-color bg-void-black">
-        <span class="font-mono text-xs text-terminal-green">SWARM SIMULATION // LIVE</span>
+        <span class="font-mono text-xs text-terminal-green">FLOCKING SKETCH</span>
         <div class="flex items-center gap-2">
+          <button id="sim-toggle" type="button" class="font-mono text-[10px] uppercase px-2 py-0.5 border border-border-color rounded text-text-secondary hover:border-terminal-green hover:text-terminal-green bg-transparent cursor-pointer">Pause</button>
           <span id="sim-state" class="font-mono text-[10px] text-alert-amber uppercase px-2 py-0.5 border border-alert-amber rounded">Initializing</span>
         </div>
       </div>
@@ -77,29 +91,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </div>
 
-    <!-- Description -->
     <div class="max-w-3xl fade-in">
-      <span class="section-number">02_THEORY // HOW IT WORKS</span>
-      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Self-Assembling Coherence</h2>
+      <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">How the sketch works</h2>
       <div class="space-y-4 text-text-secondary/80 leading-relaxed">
         <p>
-          AGI-SAC models alignment as an emergent property of multi-agent interaction rather than a
-          top-down constraint. Each agent in the swarm follows simple local rules: move toward nearby
-          agents (cohesion), avoid collisions (separation), and orient with neighbors (alignment).
+          Each dot follows local rules: drift toward the centre (<strong class="text-terminal-green">cohesion, α</strong>),
+          avoid crowding neighbours, and absorb random kicks (<strong class="text-alert-amber">noise, Ω</strong>).
+          Raise the noise past the cohesion and the group scatters; the label flips from STABLE to TURBULENT or CRITICAL.
         </p>
         <p>
-          The <strong class="text-terminal-green">Alignment Force (α)</strong> controls how strongly
-          agents are pulled toward the swarm's coherent center — the emergent attractor. Higher values
-          produce tight, stable clusters. Lower values allow agents to drift and explore.
-        </p>
-        <p>
-          The <strong class="text-alert-amber">Chaos/Entropy parameter (Ω)</strong> introduces random
-          perturbations that test system resilience. When entropy exceeds alignment, the system transitions
-          from STABLE to CRITICAL — a phase change analogous to alignment failure.
-        </p>
-        <p>
-          The key insight: robust alignment doesn't require perfect control. Systems that tolerate moderate
-          entropy while maintaining coherence are more resilient than brittle, over-constrained ones.
+          That is the intuition AGI-SAC was built to test properly: whether coordination in a multi-agent system
+          holds up under perturbation. The real instrument uses language-model agents, repeatable protocols, and
+          measured coordination metrics. See the
+          <a href="https://topstolenname.github.io/agisa_sac/" target="_blank" rel="noopener" class="text-terminal-green hover:text-alert-amber transition-colors">documentation</a>.
         </p>
       </div>
     </div>
@@ -333,13 +337,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         initAgents(agentCount);
       });
 
+      // Respect prefers-reduced-motion: start paused, let the visitor opt in.
+      const toggle = document.getElementById('sim-toggle');
+      let running = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const setToggle = () => { if (toggle) toggle.textContent = running ? 'Pause' : 'Play'; };
+      toggle?.addEventListener('click', () => {
+        running = !running;
+        setToggle();
+        if (running) requestAnimationFrame(loop);
+      });
+
       let frameCount = 0;
       function loop() {
         update();
         draw();
         frameCount++;
         if (frameCount % 10 === 0) updateUI();
-        requestAnimationFrame(loop);
+        if (running) requestAnimationFrame(loop);
       }
 
       // Initialize
@@ -349,7 +363,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         simState.textContent = 'Running';
         simState.className = 'font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded';
       }
+      setToggle();
       loop();
+      updateUI();
 
       // On resize, clamp agents to new bounds instead of resetting
       window.addEventListener('resize', () => {

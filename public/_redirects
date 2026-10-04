@@ -1,0 +1,24 @@
+# Old URLs from the pre-October-2026 site structure. 301 so bookmarks and search results follow.
+# Static rules first (both slash forms), splats last.
+/resume                          /experience/                         301
+/resume/                         /experience/                         301
+/projects                        /work/                               301
+/projects/                       /work/                               301
+/projects/anvil                  /work/anvil/                         301
+/projects/anvil/                 /work/anvil/                         301
+/projects/emergent-divergence    /work/emergent-divergence/           301
+/projects/emergent-divergence/   /work/emergent-divergence/           301
+/projects/agi-sac                /lab/agi-sac/                        301
+/projects/agi-sac/               /lab/agi-sac/                        301
+/projects/bench-cli              /lab/#bench-cli                      301
+/projects/bench-cli/             /lab/#bench-cli                      301
+/projects/claude-os              /lab/#claude-os                      301
+/projects/claude-os/             /lab/#claude-os                      301
+/projects/concord                /writing/concord-of-coexistence/     301
+/projects/concord/               /writing/concord-of-coexistence/     301
+/research                        /writing/                            301
+/research/                       /writing/                            301
+/blog                            /writing/                            301
+/blog/                           /writing/                            301
+/research/*                      /writing/:splat                      301
+/blog/*                          /writing/:splat                      301

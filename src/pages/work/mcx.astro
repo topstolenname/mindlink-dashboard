@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseHeader from '../../components/CaseHeader.astro';
+
+const repo = 'https://github.com/topstolenname/mcx-experiment';
+
+const built = [
+  {
+    title: 'Electorate-denominator authorization',
+    body: 'Approvals are counted against a frozen electorate. Abstentions stay in the denominator, so a quiet majority cannot be dropped from the count.',
+  },
+  {
+    title: 'Domain assent instead of a headcount',
+    body: 'High-impact decisions need an approval from each named domain (human, infrastructure, agent). Four of six agent ballots clear a flat two-thirds vote but fail domain assent. Renaming the domains changes nothing.',
+  },
+  {
+    title: 'Signed evidence, separate verifier',
+    body: 'Decisions are packaged as Ed25519-signed evidence. A verifier written separately from the engine recounts each package, and a tampered signature invalidates it.',
+  },
+  {
+    title: 'Fail-closed enforcement',
+    body: 'An enforcer guards resource commits. It denies an out-of-scope recipient, a delegation that is not attenuated, a disallowed payload classification, and a capability revoked before the commit takes effect.',
+  },
+];
+
+const discipline = [
+  { file: 'README.md', note: 'opens with "What this does not show", before the result' },
+  { file: 'CLAIMS.md', note: 'maps each paper claim to a test, red-team id, or scenario, or marks it Not shown; a test fails if a reference goes stale' },
+  { file: 'REDTEAM.md', note: 'a catalogue of attacks with required outcomes; an attack that succeeds counts as a break' },
+  { file: 'SPEC.md', note: 'written so a third party can reimplement the rules without reading the Python' },
+];
+
+const notShown = [
+  'That the authorization domains are independently operated. Every key is generated in one process.',
+  'That the enforcer sits outside the agent or mediates every path to a resource. It runs in-process and guards an in-memory ledger.',
+  'Witnessed logs, Merkle inclusion proofs, signed checkpoints, or key custody.',
+  'Anything about model behaviour, deception, or alignment.',
+];
+---
+
+<BaseLayout title="MCX: Meta-Concord reference implementation" description="A Python reference implementation of domain-assent authorization for agent actions, with signed evidence, a fail-closed enforcer, red-team catalogue, and a claim-to-evidence map.">
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <CaseHeader
+      title="MCX"
+      subtitle="Reference implementation for one claim in my Meta-Concord draft 0.4 white paper: requiring assent from each authorization domain is not the same rule as a two-thirds vote over the same voters."
+      status="Active"
+      statusLine="Status as of October 4, 2026: active, developed in the open. Python, Apache-2.0."
+    />
+
+    <div class="space-y-12 fade-in">
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">The problem</h2>
+        <div class="space-y-4 text-text-secondary/85 leading-relaxed">
+          <p>
+            When AI agents can take real actions (move data, grant access, spend money), someone has to decide who
+            is allowed to approve what. A simple majority vote looks fair, but a single bloc can capture it. Meta-Concord
+            proposes that high-impact actions need assent from each distinct domain: the humans accountable for
+            the system, the people who run the infrastructure, and the agents themselves.
+          </p>
+          <p>
+            A white paper can claim that. MCX is the smallest working system that lets someone check it.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">What I built</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {built.map((b) => (
+            <div class="border border-border-color rounded-lg p-5">
+              <h3 class="font-mono text-sm font-semibold text-terminal-green mb-2">{b.title}</h3>
+              <p class="text-sm text-text-secondary/75 leading-relaxed">{b.body}</p>
+            </div>
+          ))}
+        </div>
+        <p class="text-sm text-text-secondary/70 mt-4">
+          One command (<code class="font-mono text-xs text-terminal-green">mcx-scenario section-15.4</code>) reruns the
+          paper's comparison from a JSON scenario file. Copy the file and edit it to test your own electorates and rules.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">How the evidence is kept honest</h2>
+        <ul class="space-y-3">
+          {discipline.map((d) => (
+            <li class="flex flex-col sm:flex-row sm:gap-4 border-b border-border-color/50 pb-3">
+              <a href={`${repo}/blob/main/${d.file}`} target="_blank" rel="noopener" class="font-mono text-sm text-terminal-green hover:text-alert-amber transition-colors sm:w-32 shrink-0">{d.file}</a>
+              <span class="text-sm text-text-secondary/75">{d.note}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="text-sm text-text-secondary/70 mt-4">Backed by a pytest suite, including a check of every approval subset of a small electorate against an independent count.</p>
+      </section>
+
+      <section class="border border-alert-amber/40 rounded-lg p-6 bg-alert-amber/5">
+        <h2 class="font-mono text-base font-semibold text-alert-amber mb-3">What this does not show</h2>
+        <ul class="list-disc pl-5 space-y-2 text-sm text-text-secondary/80">
+          {notShown.map((n) => <li>{n}</li>)}
+        </ul>
+        <p class="text-xs text-text-secondary/60 mt-3">Quoted from the repository README, which lists them before any result.</p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Why it matters for enterprise AI</h2>
+        <p class="text-text-secondary/85 leading-relaxed">
+          The same questions come up whenever an organisation gives agents tool access. Who can approve a
+          high-impact action? Does the system fail closed when an approval is missing? Can an auditor recount a
+          decision without trusting the code that made it? MCX is a small, inspectable answer to all three, and
+          it is explicit about where it stops.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-xl font-semibold text-text-secondary mb-4">Lineage</h2>
+        <p class="text-text-secondary/85 leading-relaxed">
+          <a href="/writing/concord-of-coexistence" class="text-terminal-green hover:text-alert-amber transition-colors">Concord of Coexistence</a>
+          (principles) → Meta-Concord draft 0.4 (white paper) → MCX (code you can run).
+        </p>
+      </section>
+
+      <div class="flex flex-wrap gap-3">
+        <a href={repo} target="_blank" rel="noopener" class="font-mono text-sm border border-terminal-green text-terminal-green px-5 py-2.5 rounded hover:bg-terminal-green/10 transition-colors">View the repository →</a>
+        <a href={`${repo}/blob/main/CLAIMS.md`} target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Read CLAIMS.md</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

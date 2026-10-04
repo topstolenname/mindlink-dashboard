@@ -1,112 +1,113 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { toolchain } from '../data/work';
+
+const principles = [
+  {
+    title: 'Diagnose before you prescribe',
+    body: 'On the bench you confirm the fault before you replace a part. I build AI the same way: define the failure, test the claim, then ship.',
+  },
+  {
+    title: 'Claims map to evidence',
+    body: 'If I say something works, there should be a test, a log, or a dataset behind it, and a plain list of what it does not show. MCX’s CLAIMS.md is the model.',
+  },
+  {
+    title: 'Small models and real tools first',
+    body: 'The smallest model that can do the job, with knowledge kept outside the model and tools behind narrow contracts, is cheaper, easier to swap, and easier to audit.',
+  },
+  {
+    title: 'Fail closed',
+    body: 'When an approval, a signature, or a check is missing, the safe answer is no. That rule matters more once agents can take real actions.',
+  },
+];
+
+const certs = ['CompTIA A+', 'CompTIA Network+', 'CompTIA Security+', 'Apple Certified Repair Technician'];
 ---
 
-<BaseLayout title="About" description="About Tristan Jessup — AI researcher, developer, and founder">
+<BaseLayout title="About" description="About Tristan Jessup: senior Geek Squad bench technician turned applied AI builder, based in the Lexington, KY area.">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <!-- Header -->
-    <div class="mb-12 fade-in">
-      <span class="section-number">01_ABOUT // BIO</span>
-      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-3 mb-4">About Me</h1>
-    </div>
+    <header class="mb-10 fade-in">
+      <p class="eyebrow">About</p>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2">From the repair bench to AI systems</h1>
+    </header>
 
-    <!-- Narrative Bio -->
     <section class="mb-12 fade-in">
-      <div class="space-y-5 text-text-secondary/80 leading-relaxed text-lg">
+      <div class="space-y-5 text-text-secondary/85 leading-relaxed text-lg">
         <p>
-          I'm Tristan Jessup — an AI researcher, independent developer, and the founder of
-          <strong class="text-terminal-green">Mindlink Research Group</strong>.
+          I'm Tristan Jessup. I'm based in the Lexington, Kentucky area and work as an Advanced Repair Agent at Geek Squad
+          (Best Buy Store #259), where I'm the most senior bench technician. Every day I diagnose and repair Windows and
+          macOS machines, recover data, mentor newer techs, and take the most complex escalations.
         </p>
         <p>
-          My path to AI research wasn't linear. I started in IT support, working at Best Buy and Geek Squad,
-          where I built a deep understanding of how people interact with technology — the gaps between
-          what systems do and what humans actually need. That experience shaped my conviction that the
-          future of AI isn't about building smarter machines; it's about building machines that make us smarter together.
+          My path here wasn't linear. Before Geek Squad I worked in sales at Tesla, delivered mail as a USPS city
+          letter carrier, and did customer service in furniture retail. All of it was customer-facing, and it taught me
+          what the bench confirms daily: the gap between what a system does and what a person actually needs is where
+          the real work is. That's the gap I care about in AI.
         </p>
         <p>
-          While pursuing my B.S. in Information Technology with an AI concentration at Strayer University,
-          I began independent research into multi-agent systems, swarm intelligence, and alignment theory.
-          The questions that drive my work aren't purely technical — they sit at the intersection of
-          computer science, philosophy, and ethics.
+          I'm working toward a B.S. in Information Technology with an AI concentration at Strayer University. Outside
+          the bench I build agentic tooling and run small, honest experiments:
+          <a href="/work/mcx" class="text-terminal-green hover:text-alert-amber transition-colors">MCX</a> for evidence-first
+          AI governance, <a href="/work/emergent-divergence" class="text-terminal-green hover:text-alert-amber transition-colors">Emergent Divergence</a>
+          for multi-agent drift, and <a href="/work/anvil" class="text-terminal-green hover:text-alert-amber transition-colors">Anvil</a>
+          for bench diagnostics. I publish under the name Mindlink Research Group.
         </p>
         <p>
-          Today, I build frameworks and tools that explore the frontiers of human-AI coexistence.
-          <a href="/projects/agi-sac" class="text-terminal-green hover:text-alert-amber transition-colors">AGI-SAC</a>
-          models alignment as emergent coherence in swarm systems. The
-          <a href="/projects/concord" class="text-terminal-green hover:text-alert-amber transition-colors">Concord of Coexistence</a>
-          proposes principles for mutual flourishing between human and artificial intelligence. These aren't
-          just academic exercises — they're attempts to build the conceptual infrastructure for a future
-          where AI is a genuine partner, not a tool or a threat.
+          I'm looking for roles in enterprise AI integration, AI solutions, and AI architecture, where hands-on systems
+          experience and a habit of checking the evidence are worth more than a title.
         </p>
       </div>
     </section>
 
-    <!-- Philosophy -->
     <section class="mb-12 fade-in">
-      <span class="section-number">02_PHILOSOPHY // APPROACH</span>
-      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Research Philosophy</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="border border-border-color rounded-lg p-6">
-          <h3 class="font-mono text-sm font-semibold text-terminal-green mb-3">Alignment is Emergent</h3>
-          <p class="text-sm text-text-secondary/70 leading-relaxed">
-            You can't bolt alignment onto a system after the fact. It has to emerge from the system's architecture,
-            incentives, and interactions. My work focuses on creating conditions for alignment rather than imposing constraints.
-          </p>
-        </div>
-        <div class="border border-border-color rounded-lg p-6">
-          <h3 class="font-mono text-sm font-semibold text-terminal-green mb-3">Resilience Over Control</h3>
-          <p class="text-sm text-text-secondary/70 leading-relaxed">
-            Brittle systems fail catastrophically. I study how multi-agent systems can maintain coherence
-            under entropy — how alignment can survive chaos without requiring totalizing control.
-          </p>
-        </div>
-        <div class="border border-border-color rounded-lg p-6">
-          <h3 class="font-mono text-sm font-semibold text-terminal-green mb-3">Build to Understand</h3>
-          <p class="text-sm text-text-secondary/70 leading-relaxed">
-            Theory without implementation is speculation. Every framework I propose gets built into a
-            simulation, tool, or prototype. If it can't run, it's not finished.
-          </p>
-        </div>
-        <div class="border border-border-color rounded-lg p-6">
-          <h3 class="font-mono text-sm font-semibold text-terminal-green mb-3">Open by Default</h3>
-          <p class="text-sm text-text-secondary/70 leading-relaxed">
-            AI safety research benefits from transparency. My work is open source, my reasoning is public,
-            and my frameworks are designed to be challenged and improved by the community.
+      <p class="eyebrow">How I work</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        {principles.map((p) => (
+          <div class="border border-border-color rounded-lg p-6">
+            <h2 class="font-mono text-sm font-semibold text-terminal-green mb-3">{p.title}</h2>
+            <p class="text-sm text-text-secondary/75 leading-relaxed">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <p class="eyebrow">Certifications</p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+        {certs.map((c) => (
+          <li class="font-mono text-sm text-text-secondary/90 border border-border-color rounded px-4 py-3">{c}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <p class="eyebrow">Toolchain</p>
+      <ul class="flex flex-wrap gap-2 mt-4">
+        {toolchain.map((t) => (
+          <li class="font-mono text-xs text-text-secondary/85 bg-terminal-green/5 border border-border-color px-3 py-1.5 rounded">{t}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <div class="flex flex-col sm:flex-row gap-6 items-start border border-border-color rounded-lg p-6">
+        <img src="/img/laughing-man-240.webp" alt="The Laughing Man logo" width="96" height="96" loading="lazy" class="w-24 h-24 rounded-full shrink-0" />
+        <div>
+          <p class="eyebrow">About the logo</p>
+          <p class="text-text-secondary/80 leading-relaxed mt-2">
+            The Laughing Man is my avatar everywhere I'm online. It comes from <cite>Ghost in the Shell: Stand Alone Complex</cite>,
+            and its ring quotes Salinger: <em>“I thought what I'd do was, I'd pretend I was one of those deaf-mutes.”</em>
+            My motto is the grown-up version: <strong class="text-text-secondary">inspired by myth, accountable to evidence.</strong>
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Tech Stack -->
-    <section class="mb-12 fade-in">
-      <span class="section-number">03_STACK // TOOLS</span>
-      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Tools & Technologies</h2>
-      <div class="border border-border-color rounded-lg p-6">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {['Python', 'TypeScript', 'JavaScript', 'Astro', 'Node.js', 'Linux', 'Git', 'Docker', 'Canvas API', 'Cloudflare', 'VS Code', 'Claude'].map((tool) => (
-            <div class="font-mono text-xs text-text-secondary/80 bg-terminal-green/5 border border-border-color px-3 py-2 rounded text-center">
-              {tool}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Links -->
-    <section class="fade-in">
-      <span class="section-number">04_CONNECT</span>
-      <h2 class="font-mono text-xl font-semibold text-text-secondary mt-3 mb-6">Find Me</h2>
-      <div class="flex flex-wrap gap-4">
-        <a href="https://github.com/topstolenname" target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-6 py-3 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">
-          GitHub →
-        </a>
-        <a href="https://www.linkedin.com/in/john-jessup25/" target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-6 py-3 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">
-          LinkedIn →
-        </a>
-        <a href="/contact" class="font-mono text-sm border border-terminal-green text-terminal-green px-6 py-3 rounded hover:bg-terminal-green/10 transition-colors">
-          Contact →
-        </a>
-      </div>
+    <section class="fade-in flex flex-wrap gap-3">
+      <a href="/experience" class="font-mono text-sm border border-terminal-green text-terminal-green px-5 py-2.5 rounded hover:bg-terminal-green/10 transition-colors">Experience →</a>
+      <a href="https://github.com/topstolenname" target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">GitHub</a>
+      <a href="https://www.linkedin.com/in/john-jessup25/" target="_blank" rel="noopener" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">LinkedIn</a>
+      <a href="/contact" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Contact</a>
     </section>
   </div>
 </BaseLayout>

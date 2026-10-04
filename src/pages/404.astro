@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="That page doesn't exist on mindlink.dev.">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <p class="eyebrow">404</p>
+    <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2 mb-4">Nothing on the bench at this address.</h1>
+    <p class="text-lg text-text-secondary/80 mb-8">
+      The page may have moved when the site was reorganised. Try one of these:
+    </p>
+    <ul class="flex flex-wrap gap-3">
+      <li><a href="/" class="font-mono text-sm border border-terminal-green text-terminal-green px-5 py-2.5 rounded hover:bg-terminal-green/10 transition-colors">Home</a></li>
+      <li><a href="/work" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Work</a></li>
+      <li><a href="/experience" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Experience</a></li>
+      <li><a href="/writing" class="font-mono text-sm border border-border-color text-text-secondary px-5 py-2.5 rounded hover:border-terminal-green hover:text-terminal-green transition-colors">Writing</a></li>
+    </ul>
+    <p class="font-mono text-xs text-text-secondary/40 mt-12">Tip: press ` for the boot log.</p>
+  </div>
+</BaseLayout>

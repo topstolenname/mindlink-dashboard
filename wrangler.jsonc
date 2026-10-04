@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Static-assets-only Worker that serves www.mindlink.dev.
+  // Static-assets-only Worker that serves mindlink.dev (www redirects to the apex).
   // Must match the existing Worker name in Cloudflare so Workers Builds /
   // `wrangler deploy` update it in place.
   "name": "mindlink",
@@ -8,9 +8,10 @@
   "assets": {
     // Astro's static build output (`npm run build`)
     "directory": "./dist",
-    // Same behaviour as the currently deployed version
+    // Same trailing-slash behaviour as the currently deployed version
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "none"
+    // Serve dist/404.html with a 404 status for unknown paths
+    "not_found_handling": "404-page"
   },
   "workers_dev": true,
   "preview_urls": true,

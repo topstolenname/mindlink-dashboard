@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import resume from '../data/resume.json';
+
+const linkFor = (l: string) => (l.startsWith('mindlink.dev') ? l.replace('mindlink.dev', '') : `https://${l}`);
+---
+
+<BaseLayout title="Experience" description="Tristan Jessup — experience, selected AI work, certifications, and skills. Senior Geek Squad bench technician; applied AI systems and integration.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <header class="mb-12 fade-in">
+      <p class="eyebrow">Experience</p>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2 mb-3">{resume.name}</h1>
+      <p class="text-lg text-text-secondary/85">{resume.headline}</p>
+      <p class="font-mono text-xs text-text-secondary/60 mt-2">{resume.location} · <a href={`mailto:${resume.email}`} class="hover:text-terminal-green">{resume.email}</a></p>
+      <p class="text-text-secondary/80 leading-relaxed mt-5 max-w-3xl">{resume.summary}</p>
+      <a
+        href="/Tristan_Jessup_Resume.pdf"
+        download
+        class="inline-flex items-center gap-2 mt-6 font-mono text-sm border border-terminal-green text-terminal-green px-4 py-2 rounded hover:bg-terminal-green/10 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Download resume (PDF)
+      </a>
+    </header>
+
+    <section class="mb-12 fade-in">
+      <h2 class="eyebrow mb-5">Work history</h2>
+      <div class="relative">
+        <div class="absolute left-[7px] top-2 bottom-2 w-px bg-border-color" aria-hidden="true"></div>
+        <div class="space-y-6">
+          {resume.experience.map((job) => (
+            <div class="relative pl-8">
+              <div class="absolute left-0 top-2 w-[15px] h-[15px] rounded-full border-2 border-terminal-green bg-void-black" aria-hidden="true"></div>
+              <div class="border border-border-color rounded-lg p-6">
+                <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                  <h3 class="font-mono text-base font-semibold text-text-secondary">{job.title}</h3>
+                  <span class="font-mono text-xs text-alert-amber">{job.period}</span>
+                </div>
+                <p class="font-mono text-sm text-terminal-green/80 mb-3">{job.org}</p>
+                <ul class="list-disc pl-5 space-y-1.5 text-sm text-text-secondary/80 leading-relaxed">
+                  {job.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+              </div>
+            </div>
+          ))}
+          <div class="relative pl-8">
+            <div class="absolute left-0 top-2 w-[15px] h-[15px] rounded-full border-2 border-border-color bg-void-black" aria-hidden="true"></div>
+            <div class="border border-border-color rounded-lg p-6">
+              <h3 class="font-mono text-base font-semibold text-text-secondary mb-3">Earlier roles</h3>
+              <ul class="space-y-1.5 text-sm text-text-secondary/80">
+                {resume.earlierRoles.map((r) => (
+                  <li><span class="text-text-secondary">{r.title}</span> · <span class="font-mono text-terminal-green/70">{r.org}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <h2 class="eyebrow mb-5">Selected AI work</h2>
+      <div class="space-y-3">
+        {resume.selectedWork.map((w) => (
+          <div class="border border-border-color rounded-lg p-5">
+            <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
+              <h3 class="font-mono text-sm font-semibold text-text-secondary">{w.title}</h3>
+              {w.link && <a href={linkFor(w.link)} class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors" target={w.link.startsWith('mindlink.dev') ? undefined : '_blank'} rel="noopener">{w.link}</a>}
+            </div>
+            <p class="text-sm text-text-secondary/75 leading-relaxed">{w.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <h2 class="eyebrow mb-5">Certifications</h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {resume.certifications.map((c) => (
+          <li class="font-mono text-sm text-text-secondary/90 border border-border-color rounded px-4 py-3">{c}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-12 fade-in">
+      <h2 class="eyebrow mb-5">Education</h2>
+      <div class="space-y-3">
+        {resume.education.map((e) => (
+          <div class="border border-border-color rounded-lg p-5 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+            <div>
+              <h3 class="font-mono text-sm font-semibold text-text-secondary">{e.degree}</h3>
+              <p class="text-sm text-text-secondary/70">{e.school}</p>
+            </div>
+            <span class="font-mono text-xs text-alert-amber">{e.period}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="fade-in">
+      <h2 class="eyebrow mb-5">Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {Object.entries(resume.skills).map(([category, items]) => (
+          <div class="border border-border-color rounded-lg p-5">
+            <h3 class="font-mono text-sm font-semibold text-terminal-green mb-3">{category}</h3>
+            <ul class="flex flex-wrap gap-2">
+              {(items as string[]).map((s) => (
+                <li class="font-mono text-[11px] text-text-secondary/85 bg-terminal-green/5 border border-border-color px-2 py-1 rounded">{s}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

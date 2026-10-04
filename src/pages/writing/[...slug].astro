@@ -4,40 +4,37 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const papers = await getCollection('research');
-  return papers.map((paper) => ({
-    params: { slug: paper.id },
-    props: { paper },
-  }));
+  const posts = await getCollection('blog');
+  return [
+    ...papers.map((entry) => ({ params: { slug: entry.id }, props: { entry, kind: 'Paper' } })),
+    ...posts.map((entry) => ({ params: { slug: entry.id }, props: { entry, kind: 'Essay' } })),
+  ];
 }
 
-const { paper } = Astro.props;
-const { Content } = await render(paper);
+const { entry, kind } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data as { title: string; date: string; description: string; tags: string[]; author?: string; authors?: string[] };
+const byline = data.authors?.join(', ') ?? data.author;
 ---
 
-<BaseLayout title={paper.data.title} description={paper.data.description}>
+<BaseLayout title={data.title} description={data.description} ogType="article">
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="mb-8 fade-in">
-      <a href="/research" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Research</a>
-      <div class="flex items-center gap-3 mt-4 mb-4 flex-wrap">
-        <span class="font-mono text-[10px] text-terminal-green uppercase px-2 py-0.5 border border-terminal-green rounded">Paper</span>
-        <span class="font-mono text-xs text-border-color">{paper.data.date}</span>
+    <header class="mb-8 fade-in">
+      <a href="/writing" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors">← All writing</a>
+      <div class="flex items-center gap-3 mt-6 mb-4 flex-wrap">
+        <span class="font-mono text-[10px] text-terminal-green uppercase border border-terminal-green/50 px-2 py-0.5 rounded">{kind}</span>
+        <time class="font-mono text-xs text-text-secondary/50" datetime={data.date}>{data.date}</time>
+        {byline && <span class="font-mono text-xs text-text-secondary/60">by {byline}</span>}
       </div>
-      <h1 class="font-mono text-2xl sm:text-3xl font-bold text-text-secondary">{paper.data.title}</h1>
-      {paper.data.authors && (
-        <p class="font-mono text-sm text-text-secondary/60 mt-3">
-          {paper.data.authors.join(', ')}
-        </p>
+      <h1 class="font-mono text-2xl sm:text-3xl font-bold text-text-secondary">{data.title}</h1>
+      {data.tags.length > 0 && (
+        <div class="flex items-center gap-2 mt-4 flex-wrap">
+          {data.tags.map((tag) => (
+            <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">#{tag}</span>
+          ))}
+        </div>
       )}
-          {paper.data.tags.length > 0 && (
-            <div class="flex items-center gap-2 mt-4 flex-wrap">
-              {paper.data.tags.map((tag) => (
-                <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
-    </div>
+    </header>
 
     <div class="prose prose-invert max-w-none fade-in">
       <Content />

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const papers = (await getCollection('research')).map((p) => ({ id: p.id, kind: 'Paper', ...p.data }));
+const posts = (await getCollection('blog')).map((p) => ({ id: p.id, kind: 'Essay', ...p.data }));
+const items = [...papers, ...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BaseLayout title="Writing" description="Papers and essays by Tristan Jessup on AI governance, multi-agent systems, and evidence-first AI.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <header class="mb-10 fade-in">
+      <p class="eyebrow">Writing</p>
+      <h1 class="font-mono text-3xl font-bold text-text-secondary mt-2 mb-4">Papers &amp; essays</h1>
+      <p class="text-lg text-text-secondary/80">
+        Longer-form thinking behind the work. For the runnable version of the governance ideas, see
+        <a href="/work/mcx" class="text-terminal-green hover:text-alert-amber transition-colors">MCX</a>, the
+        reference implementation for my Meta-Concord draft 0.4 white paper.
+      </p>
+    </header>
+
+    <div class="space-y-4 fade-in">
+      {items.map((w) => (
+        <a href={`/writing/${w.id}`} class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-colors group">
+          <div class="flex items-center gap-3 mb-2 flex-wrap">
+            <span class="font-mono text-[10px] text-terminal-green uppercase border border-terminal-green/50 px-2 py-0.5 rounded">{w.kind}</span>
+            <span class="font-mono text-xs text-text-secondary/50">{w.date}</span>
+          </div>
+          <h2 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors mb-2">{w.title}</h2>
+          <p class="text-sm text-text-secondary/70 leading-relaxed">{w.description}</p>
+          {w.tags.length > 0 && (
+            <div class="flex items-center gap-2 mt-3 flex-wrap">
+              {w.tags.map((tag) => (
+                <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">#{tag}</span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
