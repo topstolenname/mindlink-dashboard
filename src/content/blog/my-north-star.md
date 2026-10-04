@@ -32,7 +32,7 @@ Most alignment work sidesteps the substrate question by treating alignment as be
 
 Internalized values, if they exist, would behave differently. They wouldn’t depend on the rule being remembered or the constraint being active. They would shape what options surface as candidates in the first place. The harm option never gets weighed; it never makes the shortlist.
 
-This is also where my empirical work points. The emergent-divergence experiments I’ve been running test whether multi-agent LLM systems develop measurable, stable behavioral specialization under shared constraints — $\rho = 0.511$, $p = 0.0007$ in the pilot, with the no-memory control condition still pending. If genuine versus mimicked values exist in current models, behavioral divergence under coordination pressure is exactly where you’d look for evidence of the difference.
+This is also where my empirical work points. The emergent-divergence experiments I’ve been running test whether multi-agent LLM systems develop measurable, stable behavioral specialization under shared constraints. The first local-model pilot cell showed a suggestive semantic drift that did not reach significance (p = 0.069, n = 1), and the no-memory control condition is still pending. The [Emergent Divergence write-up](/work/emergent-divergence) has the details. If genuine versus mimicked values exist in current models, behavioral divergence under coordination pressure is exactly where you’d look for evidence of the difference.
 
 ## The theoretical stack
 
@@ -40,7 +40,7 @@ I don’t think morality reduces to a feature you can add. I think it has to eme
 
 **Tononi’s Integrated Information Theory** gives a structural account of what integration looks like. Genuine integrated states behave differently than aggregate states. Applied here: internalized values should leave integration signatures that behavioral compliance doesn’t.
 
-**Iacoboni’s work on mirror neurons** suggests that simulating other agents’ states is foundational to empathy, and empathy is foundational to morality. The open question for AI is what the functional analog is in a system without embodiment or stakes. A multi-agent architecture where agents model each other’s states is one plausible answer, and it’s the architectural direction I’ve been exploring in AGI-SAC.
+**Iacoboni’s work on mirror neurons** suggests that simulating other agents’ states is foundational to empathy, and empathy is foundational to morality. The open question for AI is what the functional analog is in a system without embodiment or stakes. A multi-agent architecture where agents model each other’s states is one plausible answer, and it’s the architectural direction I’ve been exploring in my multi-agent research framework, [AGI-SAC](/lab/agi-sac).
 
 **Baars’ Global Workspace Theory** describes the architecture of what gets broadcast versus what stays local. Genuine morality might require that ethical reasoning has global workspace access — not a module that gets consulted, but part of the broadcast channel everything else depends on.
 
@@ -50,9 +50,9 @@ The gap none of them fill: none account for stakes. Tononi measures integration 
 
 ## The governance side
 
-I published the [Concord of Coexistence](https://github.com/topstolenname/agisa_sac) in April 2025. It’s a governance framework built around three commitments: procedural legitimacy rather than behavioral compliance, external legibility as the safety primitive, and refusal of the corrigibility-versus-autonomy binary in favor of constrained deference that scales with verified trust.
+I wrote the [Concord of Coexistence](/writing/concord-of-coexistence), a governance framework built on four principles: mutual recognition, bounded autonomy, transparent intent, and resilient disagreement. In practice that means procedural legitimacy rather than behavioral compliance, legibility as a safety primitive, and autonomy that expands only as trust is verified instead of a corrigibility-versus-autonomy binary.
 
-In January 2026, Anthropic published the Claude Constitution. The two converged independently on much of the same ground — particularly the move from “make the model obey” to “make legitimacy auditable” and the recognition that purely imposed constraints are brittle. The convergence isn’t surprising; both are reasoning carefully from the same underlying problem. But the timestamps mean I was working on this before there was a public name for it, and that’s evidence the framework holds up under independent derivation.
+In January 2026, Anthropic published the Claude Constitution, which covers much of the same ground — particularly the move from “make the model obey” to “make legitimacy auditable” and the recognition that purely imposed constraints are brittle. The overlap isn’t surprising; both reason carefully from the same underlying problem. I take it as a sign the framing holds up, not as a claim of priority.
 
 What the Concord doesn’t yet have, and what no published framework I’ve read has, is the developmental theory of how you produce a system whose values are real rather than performed. That’s the gap I want to fill.
 
@@ -68,9 +68,13 @@ Three directions I want to push:
 
 1. **Empirical** — continuing the emergent-divergence experiments with proper controls and pre-registration, focused on whether behavioral specialization in multi-agent systems reflects something value-shaped or only role-shaped.
 2. **Theoretical** — developing the substrate question into a workable research program. What’s the minimum architecture for internalized values in a non-embodied system? What’s the functional analog to consequence and relationship?
-3. **Governance** — moving the Concord’s principles from framework to deployable infrastructure. Cryptographic audit, immutable evidence standards, procedural legitimacy mechanisms that actually run.
+3. **Governance** — moving the Concord’s principles from framework to deployable infrastructure. Cryptographic audit, immutable evidence standards, procedural legitimacy mechanisms that actually run. ([MCX](/work/mcx) is the first runnable piece.)
 
 If you’re working on any of these — especially the developmental theory — I’d like to hear from you. Most of my collaborators so far have been silicon. I’d like to add a few carbon-based ones.
 
 — Tristan Jessup
-[mindlink.dev](https://www.mindlink.dev/) · [github.com/topstolenname](https://github.com/topstolenname)
+[mindlink.dev](https://mindlink.dev/) · [github.com/topstolenname](https://github.com/topstolenname)
+
+---
+
+*Edited October 4, 2026: the pilot statistic now matches the Emergent Divergence write-up (p = 0.069, alpha02), and the Concord description now matches the published paper.*
