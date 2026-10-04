@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  status: string;
+  statusTone?: 'green' | 'amber';
+  statusLine: string;
+}
+const { title, subtitle, status, statusTone = 'green', statusLine } = Astro.props;
+const tone = statusTone === 'green' ? 'text-terminal-green border-terminal-green' : 'text-alert-amber border-alert-amber';
+---
+
+<header class="mb-10 fade-in">
+  <a href="/work" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors">← All work</a>
+  <p class="eyebrow mt-6">Case study</p>
+  <div class="flex flex-wrap items-center gap-3 mt-2 mb-3">
+    <h1 class="font-mono text-3xl font-bold text-text-secondary">{title}</h1>
+    <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', tone]}>{status}</span>
+  </div>
+  <p class="text-lg text-text-secondary/80 max-w-3xl">{subtitle}</p>
+  <p class="font-mono text-xs text-text-secondary/60 mt-4 border-l-2 border-border-color pl-3">{statusLine}</p>
+</header>

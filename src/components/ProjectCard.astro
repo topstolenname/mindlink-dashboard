@@ -1,39 +1,51 @@
 ---
+type Status = 'active' | 'pilot' | 'paused' | 'concept' | 'archived';
+
 interface Props {
   title: string;
   description: string;
-  status: 'active' | 'archived' | 'in-progress' | 'pre-flight';
+  status: Status;
   href: string;
   tags?: string[];
+  /** Short note on what evidence exists, e.g. "Public repo". */
+  evidence?: string;
 }
 
-const { title, description, status, href, tags = [] } = Astro.props;
+const { title, description, status, href, tags = [], evidence } = Astro.props;
 
-const statusColors = {
+const statusLabel: Record<Status, string> = {
+  active: 'Active',
+  pilot: 'Pilot',
+  paused: 'Paused prototype',
+  concept: 'Concept',
+  archived: 'Archived',
+};
+
+const statusColors: Record<Status, string> = {
   active: 'text-terminal-green border-terminal-green',
-  'in-progress': 'text-alert-amber border-alert-amber',
-  'pre-flight': 'text-alert-amber border-alert-amber',
-  archived: 'text-border-color border-border-color',
+  pilot: 'text-terminal-green border-terminal-green',
+  paused: 'text-alert-amber border-alert-amber',
+  concept: 'text-text-secondary/60 border-border-color',
+  archived: 'text-text-secondary/50 border-border-color',
 };
 ---
 
-<a href={href} class="group block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 bg-void-black hover:bg-terminal-green/[0.02]">
-  <div class="flex items-start justify-between mb-3">
+<a href={href} class="group flex flex-col h-full border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-colors duration-300 bg-void-black hover:bg-terminal-green/[0.02]">
+  <div class="flex items-start justify-between gap-3 mb-3">
     <h3 class="font-mono text-base font-semibold text-text-secondary group-hover:text-terminal-green transition-colors">
       {title}
     </h3>
-    <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', statusColors[status]]}>
-      {status}
+    <span class:list={['shrink-0 font-mono text-[10px] uppercase px-2 py-0.5 border rounded', statusColors[status]]}>
+      {statusLabel[status]}
     </span>
   </div>
-  <p class="text-sm text-text-secondary/70 leading-relaxed mb-4">{description}</p>
-  {tags.length > 0 && (
-    <div class="flex flex-wrap gap-2">
-      {tags.map((tag) => (
-        <span class="font-mono text-[10px] text-terminal-green/60 bg-terminal-green/5 px-2 py-0.5 rounded">
-          {tag}
-        </span>
-      ))}
-    </div>
-  )}
+  <p class="text-sm text-text-secondary/75 leading-relaxed mb-4">{description}</p>
+  <div class="mt-auto flex flex-wrap items-center gap-2">
+    {evidence && (
+      <span class="font-mono text-[10px] text-alert-amber/90 border border-alert-amber/30 px-2 py-0.5 rounded">{evidence}</span>
+    )}
+    {tags.map((tag) => (
+      <span class="font-mono text-[10px] text-terminal-green/70 bg-terminal-green/5 px-2 py-0.5 rounded">{tag}</span>
+    ))}
+  </div>
 </a>
