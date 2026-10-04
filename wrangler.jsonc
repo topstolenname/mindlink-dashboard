@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Static-assets-only Worker that serves www.mindlink.dev.
+  // Must match the existing Worker name in Cloudflare so Workers Builds /
+  // `wrangler deploy` update it in place.
+  "name": "mindlink",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    // Astro's static build output (`npm run build`)
+    "directory": "./dist",
+    // Same behaviour as the currently deployed version
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "workers_dev": true,
+  "preview_urls": true,
+  "observability": {
+    "enabled": true
+  }
+}
