@@ -8,6 +8,8 @@ const blog = defineCollection({
     date: z.string(),
     category: z.enum(['opinion', 'ai-ethics', 'project-updates']),
     description: z.string(),
+    author: z.string().default('Tristan Jessup'),
+    tags: z.array(z.string()).default([]),
   }),
 });
 
@@ -18,6 +20,7 @@ const research = defineCollection({
     date: z.string(),
     description: z.string(),
     authors: z.array(z.string()).optional(),
+    tags: z.array(z.string()).default([]),
   }),
 });
 

@@ -24,13 +24,23 @@ const categoryColors: Record<string, string> = {
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="mb-8 fade-in">
       <a href="/blog" class="font-mono text-xs text-terminal-green hover:text-alert-amber transition-colors mb-4 inline-block">← Back to Blog</a>
-      <div class="flex items-center gap-3 mt-4 mb-4">
+      <div class="flex items-center gap-3 mt-4 mb-4 flex-wrap">
         <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', categoryColors[post.data.category] || 'text-text-secondary']}>
           {post.data.category.replace('-', ' ')}
         </span>
         <span class="font-mono text-xs text-border-color">{post.data.date}</span>
+        {post.data.author && <span class="font-mono text-xs text-text-secondary/60">by {post.data.author}</span>}
       </div>
       <h1 class="font-mono text-2xl sm:text-3xl font-bold text-text-secondary">{post.data.title}</h1>
+          {post.data.tags.length > 0 && (
+            <div class="flex items-center gap-2 mt-4 flex-wrap">
+              {post.data.tags.map((tag) => (
+                <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
     </div>
 
     <div class="prose prose-invert max-w-none fade-in">

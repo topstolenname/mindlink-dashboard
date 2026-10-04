@@ -31,7 +31,7 @@ const categoryColors: Record<string, string> = {
       <div class="space-y-4 fade-in">
         {posts.map((post) => (
           <a href={`/blog/${post.id}`} class="block border border-border-color rounded-lg p-6 hover:border-terminal-green/50 transition-all duration-300 group">
-            <div class="flex items-center gap-3 mb-2">
+            <div class="flex items-center gap-3 mb-2 flex-wrap">
               <span class:list={['font-mono text-[10px] uppercase px-2 py-0.5 border rounded', categoryColors[post.data.category] || 'text-text-secondary']}>
                 {post.data.category.replace('-', ' ')}
               </span>
@@ -41,6 +41,15 @@ const categoryColors: Record<string, string> = {
               {post.data.title}
             </h2>
             <p class="text-sm text-text-secondary/70 leading-relaxed">{post.data.description}</p>
+            {post.data.tags.length > 0 && (
+              <div class="flex items-center gap-2 mt-3 flex-wrap">
+                {post.data.tags.map((tag) => (
+                  <span class="font-mono text-[10px] text-text-secondary/50 px-2 py-0.5 border border-border-color rounded">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </a>
         ))}
       </div>

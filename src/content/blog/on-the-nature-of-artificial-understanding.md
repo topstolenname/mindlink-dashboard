@@ -2,6 +2,7 @@
 title: "On the Nature of Artificial Understanding"
 date: "2026-04-01"
 category: "opinion"
+tags: ["philosophy-of-mind", "ai-cognition", "understanding"]
 description: "What does it mean for a system to understand? Exploring the gap between pattern matching and genuine comprehension in modern AI architectures."
 ---
 
